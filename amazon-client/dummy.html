@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Popup Form</title>
+  <style>
+    /* Overlay to disable the background */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      z-index: 999;
+    }
+
+    /* Modal container */
+    .modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+      display: none;
+    }
+
+    /* Form inside modal */
+    .modal form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal form input,
+    .modal form button {
+      margin-bottom: 10px;
+      padding: 10px;
+      font-size: 1rem;
+    }
+
+    /* Show modal and overlay */
+    .modal.show,
+    .overlay.show {
+      display: block;
+    }
+
+    /* Disable scrolling when modal is active */
+    body.modal-active {
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body>
+  <button id="openModal">Open Form</button>
+
+  <!-- Overlay -->
+  <div class="overlay" id="overlay"></div>
+
+  <!-- Modal -->
+  <div class="modal" id="modal">
+    <form>
+      <h2>Signup Form</h2>
+      <input type="text" placeholder="Username" required />
+      <input type="password" placeholder="Password" required />
+      <button type="submit">Submit</button>
+      <button type="button" id="closeModal">Close</button>
+    </form>
+  </div>
+
+  <script>
+    const openModalButton = document.getElementById("openModal");
+    const closeModalButton = document.getElementById("closeModal");
+    const modal = document.getElementById("modal");
+    const overlay = document.getElementById("overlay");
+
+    // Open modal
+    openModalButton.addEventListener("click", () => {
+      modal.classList.add("show");
+      overlay.classList.add("show");
+      document.body.classList.add("modal-active");
+    });
+
+    // Close modal
+    closeModalButton.addEventListener("click", () => {
+      modal.classList.remove("show");
+      overlay.classList.remove("show");
+      document.body.classList.remove("modal-active");
+    });
+
+    // Close modal if overlay is clicked
+    overlay.addEventListener("click", () => {
+      modal.classList.remove("show");
+      overlay.classList.remove("show");
+      document.body.classList.remove("modal-active");
+    });
+  </script>
+</body>
+</html>
