@@ -15,17 +15,19 @@
   <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap"
     rel="stylesheet">
   <!-- Here are the CSS files for this page. -->
+  <link rel="shortcut icon" href="./images/amazon.png" type="image/x-icon">
   <link rel="stylesheet" href="styles/shared/general.css">
   <link rel="stylesheet" href="styles/shared/amazon-header.css">
   <link rel="stylesheet" href="styles/pages/amazon.css">
   <link rel="stylesheet" href="styles/shared/amazon-fotter.css">
+  <link rel="stylesheet" href="styles/pages/notFoundError.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
     integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 </head>
 
-<body>
+<body class="amazon-body">
   <div class="amazon-header" id="amazon-nav">
     <div class="amazon-header-left-section">
       <a href="/" class="header-link">
@@ -65,7 +67,7 @@
       </select>
       <input class="search-bar" id="search-bar" type="text" placeholder="Search Amazon.in ">
 
-      <button class="search-button">
+      <button class="search-button" id="search-btn">
         <img class="search-icon" src="images/icons/search-icon.png">
       </button>
     </div>
@@ -73,6 +75,8 @@
     <a href="signin" class="amazon-header-right-second">
       <p class="sign-in-nav"> Hello, Sign in </p>
       <h3 class="account-list-nav"> Account & list</h3>
+
+      
     </a>
 
     <div class="amazon-header-right-section">
@@ -90,9 +94,11 @@
   </div>
 
   <div class="main">
-    <div class="filter-section">
 
+    <div class="filter-section">
     </div>
+    
+    <div class="product-not-found"></div>
 
     <div class="products-grid js-product-container">
     </div>

@@ -13,7 +13,7 @@ public class ProductController {
         this.productService=productService;
     }
 
-    @GetMapping("/products")
+//    @GetMapping("/products")
     public ResponseEntity<List<ProductResponseDTO>> productList(){
         var allProduct = productService.getAllProducts();
 
@@ -31,11 +31,9 @@ public class ProductController {
         return ResponseEntity.ok(response) ;
     }
 
-
     @GetMapping("/products/search")
     public ResponseEntity<List<ProductResponseDTO>> getListOfProductBySearch(
-            @RequestParam String keyword
-    ){
+            @RequestParam String keyword    ){
         var response = productService.getProductBySearch(keyword);
         return ResponseEntity.ok(response);
     }
@@ -48,7 +46,13 @@ public class ProductController {
         return ResponseEntity.ok(response) ;
     }
 
-
+    @GetMapping("main/products")
+    public ResponseEntity<List<ProductResponseDTO>> getAllProductBasedOnUserSelectADV(
+            @RequestParam String enc
+    ){
+        var response = productService.getProductByADV(enc);
+        return ResponseEntity.ok(response);
+    }
 }
 
 

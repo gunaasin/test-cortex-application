@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
 })
 
 export function loadFilterFunction(){
-
   
     // Define filter section HTML
     const filterSectionHtml = `

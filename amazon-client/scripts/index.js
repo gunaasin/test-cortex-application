@@ -2,10 +2,15 @@ import './stylescripts/navbar.js';
 import './stylescripts/fotter.js';
 import './stylescripts/backtotop.js';
 
+console.log(JSON.parse(localStorage.getItem("token")));
 
-// nav index to product page
+// adv index to product page
 document.querySelectorAll(".adv-img").forEach((element)=>{
+    const productKeyword = element.getAttribute("data-product-keyword");
+
     element.addEventListener("click",()=>{
-        window.location.href="amazon";
+        // console.log(productKeyword);
+        window.location.href = `amazon?d=${encodeURIComponent(btoa(JSON.stringify(productKeyword)))}`;
     });
+
 })

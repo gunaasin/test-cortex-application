@@ -18,8 +18,6 @@ async function loadPage() {
        console.log("sumthing is worng !! ") ;
     }
 
-    
-
      resumeCheckOutRender(); 
      renderPaymentSummary();
 }loadPage()

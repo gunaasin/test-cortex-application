@@ -1,3 +1,4 @@
+import { products } from "../../data/products.js";
 const navbar = document.getElementById("amazon-nav");
 
 navbar.innerHTML = `
@@ -34,9 +35,9 @@ navbar.innerHTML = `
             <option value="14">Mobile</option>
             <option value="15">Sports, Fitness & Outdoors</option>
         </select>
-        <input class="search-bar" type="text" placeholder="Search Amazon.in">
+        <input class="search-bar" id="search-bar" type="text" placeholder="Search Amazon.in">
 
-        <button class="search-button">
+        <button class="search-button" id="search-btn" >
             <img class="search-icon" src="images/icons/search-icon.png">
         </button>
     </div>
@@ -59,3 +60,26 @@ navbar.innerHTML = `
         </a>
     </div>
 `;
+
+const searchBarData = document.getElementById("search-bar");
+const searchBtn = document.getElementById("search-btn");
+document.addEventListener("DOMContentLoaded", () => {
+
+    searchBarData.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+        
+            let keyword = searchBarData.value.trim();
+            window.location.href = `amazon?ds=${encodeURIComponent(btoa(JSON.stringify(keyword)))}`;
+        }
+    });
+
+    searchBtn.addEventListener("click", () => {
+
+        let keyword = searchBarData.value.trim();
+        window.location.href = `amazon?ds=${encodeURIComponent(btoa(JSON.stringify(keyword)))}`;
+    })
+})
+
+
+
+

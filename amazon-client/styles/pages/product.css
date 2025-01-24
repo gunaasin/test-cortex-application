@@ -103,6 +103,7 @@ body {
 }
 /* Product Images Styles */
 .product-images {
+   
     display: flex;
     gap: 20px;
 }
@@ -127,16 +128,26 @@ body {
 }
 
 .main-image {
+
     display: flex;
-    align-items: center;
+    padding-top: 100px;
+    align-items: start;
     justify-content: center;
     flex-grow: 1;
     overflow: hidden;
+    position: relative;
+}
+
+.main-image i{
+    cursor: pointer;
+    position: absolute;
+    top: 30px;
+    right: 30px;
 }
 
 .main-image img {
-   
-    width: 80%;
+    
+    width: 70%;
     height: auto;
     object-fit: contain;
 }
@@ -171,6 +182,24 @@ body {
     gap: 10px;
     margin-bottom: 16px;
 }
+.prime {
+    background: url('https://m.media-amazon.com/images/G/31/marketing/prime/prime_logo._CB485935600_.png') no-repeat;
+    background-size: contain;
+    width: 52px;
+    height: 15px;
+    margin: 5px 0px;
+  }
+  
+  .deal p{
+    width: 12%;
+    font-size: 12px;
+    border-radius: 3px;
+    color: white;
+    font-weight: 500;
+    background-color: #CC0C39;
+    padding: 4px 10px;
+    margin: 5px 0px;
+  }
 
 .stars {
     color: #F90;
@@ -188,8 +217,21 @@ body {
 }
 
 .price {
+    /* display: flex;/ */
     font-size: 28px;
     color: #0F1111;
+}
+.discount{
+    /* padding-left: 15px;
+    margin-top: 14px; */
+    color: #4a4a4a;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.discount span{
+    font-weight: 300;
+    text-decoration: line-through;
 }
 
 .currency {

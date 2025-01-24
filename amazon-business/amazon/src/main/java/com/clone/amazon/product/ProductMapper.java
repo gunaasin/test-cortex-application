@@ -11,11 +11,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProductMapper {
 
-//    private final CategoryRepository categoryRepository;
     private final CategoryService categoryService;
 
     public ProductMapper(CategoryRepository categoryRepository , CategoryService categoryService){
-//        this.categoryRepository=categoryRepository;
         this.categoryService=categoryService;
     }
 

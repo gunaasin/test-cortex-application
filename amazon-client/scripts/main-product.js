@@ -1,13 +1,13 @@
 import "./stylescripts/navbar.js";
 import "./stylescripts/fotter.js";
 import "./stylescripts/backtotop.js";
-import {cart , updateCartQuatity} from "../data/cart.js";
+import { cart, updateCartQuatity } from "../data/cart.js";
 import "./relatedProductItem.js";
 import getStarRating from "./util/starRatingGenarater.js";
 
 
 const params = new URLSearchParams(window.location.search);
-const product = JSON.parse(decodeURIComponent(params.get("d")));
+const product = JSON.parse(atob(decodeURIComponent(params.get("d"))));
 console.log(product);
 
 document.querySelector(".product-grid")
@@ -20,6 +20,7 @@ document.querySelector(".product-grid")
                     <img src="${product.image}" alt="Product thumbnail 3" class="thumbnail " data-color="color3">
                 </div>
                 <div class="main-image">
+                    <i class="fa-solid fa-arrow-up-from-bracket" id="share-product"></i>
                     <img src="${product.image}" alt="Main product image" class="product_img">
                 </div>
             </div>
@@ -33,14 +34,18 @@ document.querySelector(".product-grid")
                     ${getStarRating(product.rating.stars)}
                     <a href="#reviews">${product.rating.count} ratings</a>
                 </div>
-
                 <div class="price-block">
+                       ${product.price > 1000 ? ` <div class="deal"> <p>Today Deal</p> </div>` : ""}
                     <div class="price">
+                      <p class="discount">MRP: <span>₹ ${(product.price*32 /100) + product.price }</span></p>
                         <span class="currency">₹</span>
                         <span class="amount">${product.price}</span>
                         <span class="cents">.00</span>
+                      
                     </div>
+                    
                     <div class="shipping">FREE Returns</div>
+                    ${product.price > 3000 ? ` <div class="prime"></div>` : ""}
                 </div>
 
                  <!-- Service Features -->
@@ -89,9 +94,11 @@ document.querySelector(".product-grid")
             <!-- Buy Box -->
             <div class="buy-box">
                 <div class="price">
+                
                     <span class="currency">₹</span>
                     <span class="amount">${product.price}</span>
                     <span class="cents">.00</span>
+                      <p class="discount">MRP: <span>₹ ${(product.price*32 /100) + product.price }</span></p>
                 </div>
                 
                 <div class="delivery">
@@ -133,6 +140,9 @@ selectQuatity.forEach((select) => {
     });
 });
 
+document.getElementById('share-product').addEventListener('click', () => {
+    
+})
 
 // add to cart array section
 function addToCartFunction(productId) {
@@ -180,9 +190,9 @@ addToCart.forEach((button) => {
 
 // redairect to buying section
 
-document.querySelector(".buy-now").addEventListener("click",()=>{
+document.querySelector(".buy-now").addEventListener("click", () => {
     console.log("drg")
-    window.location.href="payment";
+    window.location.href = "payment";
 })
 
 

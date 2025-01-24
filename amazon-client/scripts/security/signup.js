@@ -3,13 +3,17 @@ import { errorMessages } from './message.js';
 import { showError, clearError } from './ui.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.querySelector('.auth-form');
+    // const form = document.querySelector('.auth-form');
+    const submit = document.getElementById('submit');
     const nameInput = document.getElementById('name');
     const mobileInput = document.getElementById('mobile');
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
 
-    form.addEventListener('submit', (e) => {
+    submit.addEventListener('click', (e) => {
+
+        console.log("clicked");
+       
         e.preventDefault();
         let isValid = true;
 
@@ -50,15 +54,45 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (isValid) {
-            // In a real app, this would make an API call
+            submit.disabled = true;
+            submit.querySelector('.button-text').style.display = 'none';
+            submit.querySelector('.spinner').style.display = 'inline-block';
+            
+           
             const userData = {
                 name: nameInput.value,
-                mobile: mobileInput.value,
+                phoneNumber: mobileInput.value,
                 email: emailInput.value,
                 password: passwordInput.value
             };
-            localStorage.setItem('amazon_user', JSON.stringify(userData));
-            window.location.href = '/signin.html'; // Redirect to home page
+
+            const user = async (userData) => {
+                try{
+                    const response = await fetch("http://localhost:8080/api/auth/signUp" ,{
+                        method: "POST",
+                        headers:{
+                            'Content-Type': 'application/json'
+                        },
+                        body:JSON.stringify(userData)
+                    });
+
+                    if(!response.ok) return new Error(`signup error ${response.status}`)
+
+                    const data = await response.json();
+                    console.log('signup succsess:' , data);
+                }catch(error){
+                    console.error('error ', error);
+                }finally{
+                    submit.disabled = false;
+                    submit.querySelector('.button-text').style.display = 'inline-block';
+                    submit.querySelector('.spinner').style.display = 'none';
+                }
+            }
+
+            user(userData);
+
+            // localStorage.setItem('amazon_user', JSON.stringify(userData));
+            // window.location.href = '/signin.html'; // Redirect to home page
         }
     });
 

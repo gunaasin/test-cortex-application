@@ -1,11 +1,30 @@
-import {loadTheProduct} from '../scripts/amazon.js';
+import { pageNotFont404 } from "../scripts/stylescripts/pageNotFound.js";
+
 
 export let products = [];
 
-
-
 export function loadProductFromBackend() {
-  const promise = fetch('http://localhost:8080/api/products').then((response) => {
+
+  products.length=0;
+  const reader = localStorage.getItem('information-entry');
+  const params = new URLSearchParams(window.location.search);
+  const keywords = params.get("d");
+  const main = document.querySelector(".amazon-body");
+  // const token = null;
+  // try{
+  //   token= JSON.parse(localStorage.getItem('token')).message;
+  // }catch(error){
+  //   console.log(error)
+
+  // }
+  const promise = fetch(`http://localhost:8080/api/main/products?enc=${keywords}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",// Optional, depending on backend
+      // "Authorization": `Bearer ${token}`
+    },
+  }).then((response) => {
+  
     return response.json();
   }).then((productData) => {
     products = productData.map((item) => {
@@ -14,24 +33,46 @@ export function loadProductFromBackend() {
 
     console.log('products are loaded');
   }).catch((error) => {
+    main.innerHTML="";
     console.error("some thing is wrong please try again later :(");
     console.error(error);
+    main.innerHTML= pageNotFont404;
   });
 
   return promise;
 }
 
+// export function loadProductFromBackend() {
+//   const promise = fetch('http://localhost:8080/api/products').then((response) => {
+//     return response.json();
+//   }).then((productData) => {
+//     products = productData.map((item) => {
+//       return item;
+//     });
+
+//     console.log('products are loaded');
+//   }).catch((error) => {
+//     console.error("some thing is wrong please try again later :(");
+//     console.error(error);
+//   });
+
+//   return promise;
+// }
+
 
 export function loadProductBasedOnSearch(keyword){
-  
-  const promise = fetch(`http://localhost:8080/api/products/search?keyword=${keyword}`).then((response) => {
+  const promise = fetch(`http://localhost:8080/api/products/search?keyword=${keyword}`,{
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  }
+  ).then((response) => {
     return response.json();
   }).then((productData) => {
-
+    
+    products.length=0;
     products.push(...productData);
-    // products = productData.map((item) => {
-    //   return item;
-    // });
 
     console.log('products are loaded');
   }).catch((error) => {
@@ -41,39 +82,6 @@ export function loadProductBasedOnSearch(keyword){
 
   return promise;
 }
-
-
-
-// export const products = [
-//   {
-//     id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
-//     image: "images/products/athletic-cotton-socks-6-pairs.jpg",
-//     name: "Black and Gray Athletic Cotton Socks - 6 Pairs",
-//     rating: {
-//       stars: 4.5,
-//       count: 87
-//     },
-//     priceCents: 1090,
-//     keywords: [
-//       "socks",
-//       "sports",
-//       "apparel"
-//     ]
-//   },
-//   {
-//     id: "15b6fc6f-327a-4ec4-896f-486349e85a3d",
-//     image: "images/products/intermediate-composite-basketball.jpg",
-//     name: "Intermediate Size Basketball",
-//     rating: {
-//       stars: 4,
-//       count: 127
-//     },
-//     priceCents: 2095,
-//     keywords: [
-//       "sports",
-//       "basketballs"
-//     ]
-//   },];
 
 
 export function findproduct(productId) {

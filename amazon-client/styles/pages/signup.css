@@ -1,7 +1,11 @@
 /* Signup page specific styles */
 .mobile-input {
     display: flex;
-    gap: 5px;
+    gap: 4px;
+}
+
+.mobile-input input{
+    margin-top: 0px;
 }
 
 .country-code {

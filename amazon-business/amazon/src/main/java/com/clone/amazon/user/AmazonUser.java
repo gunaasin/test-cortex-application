@@ -4,6 +4,7 @@ import com.clone.amazon.cart.Cart;
 import com.clone.amazon.orders.Orders;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 public class AmazonUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +26,10 @@ public class AmazonUser {
             nullable = false
     )
     private String email;
+
+    @Column(length = 10)
+    private String role = "user";
+
     private String password;
     @Column(
             unique = true,
@@ -38,6 +44,5 @@ public class AmazonUser {
     @OneToOne
     @JoinColumn(name = "cart_id", referencedColumnName = "id")
     private Cart cart;
-
 
 }

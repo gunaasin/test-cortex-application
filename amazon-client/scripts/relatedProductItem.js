@@ -1,22 +1,28 @@
 import getStarRating from "./util/starRatingGenarater.js";
+import { pageNotFont404 } from "../scripts/stylescripts/pageNotFound.js";
 
 const params = new URLSearchParams(window.location.search);
-const product = JSON.parse(decodeURIComponent(params.get("d")));
-
+const product = JSON.parse(atob(decodeURIComponent(params.get("d"))));
+const amazonBody = document.querySelector(".amazon-body");
 // related product section 
 const relatedProductkeyword = product.category.categoryName + ", " + product.category.brand;
 let relatedProducts = [];
 
 function loadRelatedProduct() {
-    const promise = fetch(`http://localhost:8080/api/products/relatedProduct?keyword=${relatedProductkeyword}`).then((response) => {
+    const promise = fetch(`http://localhost:8080/api/products/relatedProduct?keyword=${relatedProductkeyword}`,
+        {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json", // Optional, depending on backend
+            },
+        }
+    ).then((response) => {
         return response.json();
     }).then((productData) => {
-
-         relatedProducts = productData.map((item) => { return item;});
-
-        //  console.log('related products are loaded');
-        
+        relatedProducts = productData.map((item) => { return item; });
     }).catch((error) => {
+        amazonBody.innerHTML = "";
+        amazonBody.innerHTML = pageNotFont404;
         console.error("some thing is wrong please try again later :(");
         console.error(error);
     });
@@ -29,13 +35,11 @@ loadRelatedProduct().then(() => {
 
 
 function loadTheRelatedProduct() {
-    console.log("half black star: \u{2BDA}");
     let relatedProductHTML = "";
     relatedProducts.forEach((item) => {
         // console.log(item);
-
         relatedProductHTML += `
-        <a href="/product?d=${encodeURIComponent(JSON.stringify(item))}"  target="_blank"" class="product-card">
+        <a href="/product?d=${encodeURIComponent(btoa(JSON.stringify(item)))}"  target="_blank"" class="product-card">
             <img src="${item.image}" alt="Related Product 1">
             <h3>${item.name}</h3>
             <div class="price">₹ ${item.price}</div>
@@ -49,7 +53,7 @@ function loadTheRelatedProduct() {
     });
 
     const relatedProductGrid = document.querySelector(".products-grid");
-    relatedProductGrid.innerHTML=relatedProductHTML;
+    relatedProductGrid.innerHTML = relatedProductHTML;
 }
 
 
