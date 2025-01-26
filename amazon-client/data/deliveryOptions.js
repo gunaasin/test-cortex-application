@@ -8,6 +8,16 @@ export function getDeleiveryOption(optionId){
     return getDeleiveryFee;
 }
 
+export function getDeliveryDate(id){
+    let date;
+    deliveryOptions.forEach(option=>{
+        if(option.dID === id){
+            date = option;
+        }
+    });
+    return date;
+}
+
 
 export const deliveryOptions = [
     {

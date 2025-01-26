@@ -1,10 +1,11 @@
 import { cart, updateDeliveryOption, loadedCart } from "../../data/cart.js";
-import { deliveryOptions, getDeleiveryOption } from "../../data/deliveryOptions.js";
+import { deliveryOptions, getDeleiveryOption ,getDeliveryDate } from "../../data/deliveryOptions.js";
 import { renderPaymentSummary } from "./paymentSummary.js";
 
 
 export function resumeCheckOutRender(loadedCart) {
   const orders = document.querySelector(".order-summary");
+
   let ordersHTML = "";
 
   if (loadedCart.length == 0) {
@@ -17,7 +18,7 @@ export function resumeCheckOutRender(loadedCart) {
       const deliveryOptionId = cartItem.deliveryOptionId;
       const deliveryOption = getDeleiveryOption(deliveryOptionId);
       const today = dayjs();
-      const deleveryDate = today.add(deliveryOption.dDate, 'days');
+      const deleveryDate = today.add(deliveryOptionId, 'days');
       const dateString = deleveryDate.format('dddd, MMMM D');
 
       ordersHTML += `

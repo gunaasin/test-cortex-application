@@ -41,7 +41,7 @@ public class AmazonUser {
     @OneToMany(mappedBy = "amazonUser")
     private List<Orders> orders;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_id", referencedColumnName = "id")
     private Cart cart;
 

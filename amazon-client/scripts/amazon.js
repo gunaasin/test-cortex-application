@@ -52,15 +52,12 @@ document.addEventListener("DOMContentLoaded", () => {
   if (params.has("ds")) {
     
     const keyword = JSON.parse(atob(decodeURIComponent(params.get("ds")))); // Get the value of 'ds' // decode the value based on atob Base64
-    // console.log(keyword);
     someData.categories.length = 0;
     products.length=0;
     loadProductBasedOnSearch(keyword).then(() => {
       products.length === 0 ? loadProductNotFound() : loadTheProduct();
       loadFilterFunction();
     });
-  } else {
-    console.log("'ds' not found in the URL.");
   }
 });
 
@@ -84,7 +81,6 @@ export function loadTheProduct() {
   products.forEach((products) => {
 
     someData.categories.push(products.category.categoryName);
-    console.log("this one is test ",products.id);
     productHTML += `
         <div class="product-container">
          <a href="product?d=${encodeURIComponent(btoa(JSON.stringify(products)))}"  target="_blank" class="callable-container">

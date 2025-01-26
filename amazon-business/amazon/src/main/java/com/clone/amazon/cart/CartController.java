@@ -1,5 +1,6 @@
 package com.clone.amazon.cart;
 
+import com.clone.amazon.cartItem.CartItemService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,7 +12,8 @@ public class CartController {
 
     private final CartService cartService;
 
-    public  CartController(CartService cartService ){
+    public  CartController(CartService cartService
+    ){
         this.cartService = cartService;
     }
 
@@ -35,14 +37,7 @@ public class CartController {
         }
     }
 
-     @PostMapping("/add")
-    public ResponseEntity<?> addToCart(@RequestBody AddToCartDTO addToCartDTO){
-        try {
-            return ResponseEntity.ok().body(cartService.addCartToUser(addToCartDTO));
-        } catch (Exception e) {
-            return ResponseEntity.ok().body(Map.of("message" ,"wrong credential"));
-        }
-    }
+
 
 
 }

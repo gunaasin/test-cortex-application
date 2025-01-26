@@ -89,20 +89,6 @@ export function addProductInCart(request) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // update the delivery option
 export function updateDeliveryOption(cartItemId, deliveryOptionId) {
 
@@ -132,7 +118,7 @@ export function updateDeliveryOption(cartItemId, deliveryOptionId) {
       loadedCart = await response.json();
       resumeCheckOutRender(loadedCart);
       renderPaymentSummary(loadedCart);
-      console.log('loadedCart successfully:', loadedCart);
+      // console.log('loadedCart successfully:', loadedCart);
     } catch (error) {
       console.error("error", error);
     }

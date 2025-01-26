@@ -25,8 +25,6 @@ export function loadProductFromBackend() {
     products = productData.map((item) => {
       return item;
     });
-
-    console.log('products are loaded');
   }).catch((error) => {
     main.innerHTML = "";
     console.error("some thing is wrong please try again later :(");

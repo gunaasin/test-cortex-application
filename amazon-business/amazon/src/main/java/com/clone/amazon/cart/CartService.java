@@ -1,7 +1,9 @@
 package com.clone.amazon.cart;
 
 import com.clone.amazon.cartItem.CartItem;
+import com.clone.amazon.cartItem.CartItemMapper;
 import com.clone.amazon.cartItem.CartItemRepository;
+import com.clone.amazon.cartItem.CartItemRequestDTO;
 import com.clone.amazon.security.JwtService;
 
 import com.clone.amazon.user.AmazonUserRepository;
@@ -17,14 +19,17 @@ public class CartService {
     private final JwtService jwtService;
     private final CartMapper cartMapper;
     private final CartItemRepository cartItemRepository;
+    private final CartItemMapper cartItemMapper;
 
     public CartService(AmazonUserRepository amazonUserRepository,
                        CartMapper cartMapper,
                        JwtService jwtService,
+                       CartItemMapper cartItemMapper,
                        CartItemRepository cartItemRepository){
         this.amazonUserRepository=amazonUserRepository;
         this.jwtService=jwtService;
         this.cartMapper=cartMapper;
+        this.cartItemMapper=cartItemMapper;
         this.cartItemRepository=cartItemRepository;
 
     }
@@ -45,29 +50,12 @@ public class CartService {
     }
 
     public List<CartItemResponseDTO> updateCartInfo(CartUpdateRequestDTO cartUpdateRequestDTO){
-           List<CartItemResponseDTO> responce = null;
             try {
                 cartMapper.updateRequestToItem(cartUpdateRequestDTO);
-                responce = getCart(cartMapper.requestToResponse(cartUpdateRequestDTO));
+                return getCart(cartMapper.requestToResponse(cartUpdateRequestDTO));
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-            return responce;
     }
 
-    public Object addCartToUser(AddToCartDTO addToCartDTO) {
-        try {
-            if(jwtService.validateToken(addToCartDTO.token(), addToCartDTO.email())) {
-                var email = jwtService.extractMailId(addToCartDTO.token());
-//                System.out.println(cartRequestDTO.token());
-//                System.out.println(cartRequestDTO.email());
-//                System.out.println(email);
-                var cartId = amazonUserRepository.findByEmail(email).getCart().getId();
-            }else{
-
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
 }
