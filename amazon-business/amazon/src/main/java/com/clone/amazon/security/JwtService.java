@@ -64,7 +64,7 @@ public class JwtService {
         return claimResolver.apply(claims);
     }
 
-    private Claims extractAllClaims(String token) {
+     Claims extractAllClaims(String token) {
         return Jwts.
                 parser()
                 .verifyWith(getKey())
@@ -76,6 +76,14 @@ public class JwtService {
     public boolean validateToken(String token, UserDetails userDetails) {
         final String mailId = extractMailId(token);
         return (mailId.equals(((UserPrincipal) userDetails).getEmail()) && !isTokenExpired(token));
+    }
+
+    public boolean validateToken(String token , String email){
+        final String mailId = extractMailId(token);
+        System.out.println(mailId);
+        System.out.println(isTokenExpired(token));
+        System.out.println(mailId.equals(email));
+        return mailId.equals(email) && !isTokenExpired(token);
     }
 
     private boolean isTokenExpired(String token) {

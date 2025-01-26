@@ -5,14 +5,14 @@ import { convertMoney } from "../util/money.js";
 import { addOrder } from "../../data/order.js";
 
 // console.log(cart);
-export function renderPaymentSummary() {
+export function renderPaymentSummary(loadedCart) {
   let totalproductPrice = 0;
   let shipingPrice = 0;
 
-  cart.forEach((cartItem) => {
-    const product = findproduct(cartItem.productId);
+  loadedCart.forEach((cartItem) => {
+    const product = cartItem.productResponseForCartDTO;
     totalproductPrice += product.price * cartItem.quantity;
-    const shipingFees = getDeleiveryOption(cartItem.deleiveryOptionId).dCharge;
+    const shipingFees = cartItem.deliveryCharge;
     shipingPrice += shipingFees;
   });
 

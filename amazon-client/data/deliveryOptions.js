@@ -11,17 +11,17 @@ export function getDeleiveryOption(optionId){
 
 export const deliveryOptions = [
     {
-        dID : '1',
+        dID : 1,
         dDate : 7,
         dCharge : 0
     },
     {
-        dID : '2',
+        dID : 2,
         dDate : 4,
-        dCharge : 149
+        dCharge : 99
     },
     {
-        dID : '3',
+        dID : 3,
         dDate : 1,
         dCharge : 249
     }

@@ -1,4 +1,4 @@
-import { cart, updateCartQuatity } from "../data/cart.js";
+import { loadedCart ,addProductInCart } from "../data/cart.js";
 import { deliveryOptions } from "../data/deliveryOptions.js";
 import { products, loadProductFromBackend, loadProductBasedOnSearch } from "../data/products.js";
 import { loadFilterFunction } from "./stylescripts/productfilter.js";
@@ -84,7 +84,7 @@ export function loadTheProduct() {
   products.forEach((products) => {
 
     someData.categories.push(products.category.categoryName);
-
+    console.log("this one is test ",products.id);
     productHTML += `
         <div class="product-container">
          <a href="product?d=${encodeURIComponent(btoa(JSON.stringify(products)))}"  target="_blank" class="callable-container">
@@ -144,6 +144,9 @@ export function loadTheProduct() {
       `
   });
 
+ 
+
+
   // load the html in a page
   const productContainer = document.querySelector(".js-product-container");
   productContainer.innerHTML = productHTML;
@@ -167,8 +170,9 @@ export function loadTheProduct() {
       select.value = 1;
     })
 
-    cart.forEach((item) => {
-      if (item.productId === productId) {
+    loadedCart.forEach((item) => {
+      
+      if (item.productResponseForCartDTO.id === productId) {
         productIsThere = item;
       }
     })
@@ -180,11 +184,11 @@ export function loadTheProduct() {
         productIsThere.quantity += 1;
       }
     } else {
-      cart.push({
+      const Request = {
         productId: productId,
-        quantity: selectedValue,
-        deleiveryOptionId: '1'
-      });
+        quantity: selectedValue
+      }
+      addProductInCart(Request);
     }
   }
 
@@ -199,7 +203,6 @@ export function loadTheProduct() {
 
       const productId = button.getAttribute("data-product-id");
       addToCartFunction(productId);
-      updateCartQuatity();
     });
   });
 
@@ -222,7 +225,7 @@ export function loadProductNotFound() {
   productNotFound.innerHTML = `
       <main class="not-found-container">
       <div class="error-box">
-          <h1 class="error-title">Oops!</h1>
+          <img src="./images/error.png" alt="404">
           <h2 class="error-subtitle">No such product exists</h2>
           <p class="error-message">We couldn't find the product you're looking for. It might have been removed or is currently unavailable.</p>
       </div>

@@ -118,3 +118,11 @@ input:focus {
 ::-webkit-scrollbar-thumb:hover {
   background: #555; 
 }
+
+
+@media (max-width:800) {
+  /* width */
+::-webkit-scrollbar {
+  width: 0px;
+}
+}

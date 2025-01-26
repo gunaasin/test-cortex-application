@@ -2,8 +2,10 @@ package com.clone.amazon.cartItem;
 
 import com.clone.amazon.cart.Cart;
 import com.clone.amazon.product.Product;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class CartItem {
 
     @Id
@@ -19,6 +22,7 @@ public class CartItem {
 
     @ManyToOne
     @JoinColumn(name = "cart_id", referencedColumnName = "id")
+    @JsonBackReference
     private Cart cart;
 
     @ManyToOne
@@ -26,4 +30,13 @@ public class CartItem {
     private Product product;
 
     private Integer quantity;
+
+    @Column(nullable = false , columnDefinition = " integer default 1")
+    private int deliveryOptionId;
+
+    @Column(nullable = false , columnDefinition = " integer default 0")
+    private int deliveryCharge;
+
+
+
 }

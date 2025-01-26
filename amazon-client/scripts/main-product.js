@@ -4,6 +4,7 @@ import "./stylescripts/backtotop.js";
 import { cart, updateCartQuatity } from "../data/cart.js";
 import "./relatedProductItem.js";
 import getStarRating from "./util/starRatingGenarater.js";
+import "./review.js";
 
 
 const params = new URLSearchParams(window.location.search);

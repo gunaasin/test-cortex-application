@@ -2,21 +2,16 @@ import { pageNotFont404 } from "../scripts/stylescripts/pageNotFound.js";
 
 
 export let products = [];
+export let cart = [];
 
 export function loadProductFromBackend() {
 
-  products.length=0;
+  products.length = 0;
   const reader = localStorage.getItem('information-entry');
   const params = new URLSearchParams(window.location.search);
   const keywords = params.get("d");
   const main = document.querySelector(".amazon-body");
-  // const token = null;
-  // try{
-  //   token= JSON.parse(localStorage.getItem('token')).message;
-  // }catch(error){
-  //   console.log(error)
 
-  // }
   const promise = fetch(`http://localhost:8080/api/main/products?enc=${keywords}`, {
     method: "GET",
     headers: {
@@ -24,7 +19,7 @@ export function loadProductFromBackend() {
       // "Authorization": `Bearer ${token}`
     },
   }).then((response) => {
-  
+
     return response.json();
   }).then((productData) => {
     products = productData.map((item) => {
@@ -33,24 +28,38 @@ export function loadProductFromBackend() {
 
     console.log('products are loaded');
   }).catch((error) => {
-    main.innerHTML="";
+    main.innerHTML = "";
     console.error("some thing is wrong please try again later :(");
     console.error(error);
-    main.innerHTML= pageNotFont404;
+    main.innerHTML = pageNotFont404;
   });
 
   return promise;
 }
 
-// export function loadProductFromBackend() {
-//   const promise = fetch('http://localhost:8080/api/products').then((response) => {
+// export function loadCartFromBackend() {
+//   let token = null;
+//   try {
+//     token = JSON.parse(localStorage.getItem('token')).message;
+//   } catch (error) {
+//     console.log(error);
+//   }
+//   const promise = fetch('http://localhost:8080/api/cart/product',
+//     {
+//       method: "GET",
+//       headers: {
+//         "Content-Type": "application/json",
+//         "Authorization": `Bearer ${token}`
+//       },
+//     }
+//   ).then((response) => {
 //     return response.json();
 //   }).then((productData) => {
-//     products = productData.map((item) => {
+//     cart = productData.map((item) => {
 //       return item;
 //     });
 
-//     console.log('products are loaded');
+//     console.log('cart products are loaded');
 //   }).catch((error) => {
 //     console.error("some thing is wrong please try again later :(");
 //     console.error(error);
@@ -60,8 +69,8 @@ export function loadProductFromBackend() {
 // }
 
 
-export function loadProductBasedOnSearch(keyword){
-  const promise = fetch(`http://localhost:8080/api/products/search?keyword=${keyword}`,{
+export function loadProductBasedOnSearch(keyword) {
+  const promise = fetch(`http://localhost:8080/api/products/search?keyword=${keyword}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json"
@@ -70,8 +79,8 @@ export function loadProductBasedOnSearch(keyword){
   ).then((response) => {
     return response.json();
   }).then((productData) => {
-    
-    products.length=0;
+
+    products.length = 0;
     products.push(...productData);
 
     console.log('products are loaded');

@@ -64,7 +64,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
     
                     localStorage.setItem("datacart",JSON.stringify(await response.json()));
-                    console.log('signin key'); // More appropriate message   JSON.parse(localStorage.getItem("token")
+                    console.log('signin key');
+                    //  More appropriate message   
+                    // console.log(JSON.parse(localStorage.getItem("datacart")));
+                    window.location.href='amazonUser';
 
                 } catch (error) {
                     console.error('Error during signin:', error);

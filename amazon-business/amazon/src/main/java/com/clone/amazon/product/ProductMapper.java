@@ -17,7 +17,7 @@ public class ProductMapper {
         this.categoryService=categoryService;
     }
 
-    ProductResponseDTO productResponseDTO(Product product){
+     ProductResponseDTO productResponseDTO(Product product){
         return ProductResponseDTO.builder()
                 .id(product.getId())
                 .name(product.getName())
@@ -45,7 +45,7 @@ public class ProductMapper {
     }
 
 
-    Product convertRequestToProduct(ProductRequestDTO productRequestDTO){
+     Product convertRequestToProduct(ProductRequestDTO productRequestDTO){
         
         Product product = Product.builder()
                 .name(productRequestDTO.name())
@@ -63,6 +63,16 @@ public class ProductMapper {
         product.getRating().setProduct(product);
         return product;
 
+    }
+
+
+    public ProductResponseForCartDTO productToCartProductDto(Product product){
+        return ProductResponseForCartDTO.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .image(product.getImage())
+                .price(product.getPrice())
+                .build();
     }
 
 
