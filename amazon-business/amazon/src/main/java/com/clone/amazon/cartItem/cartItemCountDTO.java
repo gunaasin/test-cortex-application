@@ -1,4 +1,7 @@
 package com.clone.amazon.cartItem;
 
-public record cartItemCountDTO() {
+public record cartItemCountDTO(
+        String token,
+        String email
+) {
 }

@@ -1,4 +1,11 @@
 package com.clone.amazon.Inforamtion;
 
-public record NavInfoDTO() {
+import lombok.Builder;
+
+@Builder
+public record NavInfoDTO(
+        int cartCount,
+        String name,
+        String address
+) {
 }

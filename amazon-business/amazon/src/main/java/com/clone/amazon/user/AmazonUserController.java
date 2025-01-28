@@ -22,6 +22,7 @@ public class AmazonUserController {
     @PostMapping("/signUp")
     public ResponseEntity<?> saveUser(@RequestBody AmazonUserRequestDTO dto) {
         try {
+            System.out.println(dto);
 //            AmazonUserResponseDTO savedUser = userService.saveUser(dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser(dto));
         } catch (Exception e) {
@@ -41,7 +42,6 @@ public class AmazonUserController {
                     .body("Incorrect emailId or password");
         }
     }
-
 
     @PostMapping("/getKey")
     public ResponseEntity<?> start(@RequestBody String key){

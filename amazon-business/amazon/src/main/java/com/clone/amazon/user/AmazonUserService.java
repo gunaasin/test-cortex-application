@@ -1,6 +1,7 @@
 package com.clone.amazon.user;
 
 import com.clone.amazon.security.JwtService;
+import jakarta.transaction.Transactional;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,9 +27,17 @@ public class AmazonUserService {
         this.jwtService=jwtService;
     }
 
+    @Transactional
     public AmazonUserResponseDTO saveUser(AmazonUserRequestDTO dto) {
+        System.out.println(dto +" in the amazon user save");
+        try{
         var response = amazonUserRepository.save(amazonUserMapper.convertToUser(dto));
+        System.out.println(dto +" 2 in the amazon user save");
         return amazonUserMapper.convertToResponse(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public Object verifyUser(UserLoginDto userLoginDto) {

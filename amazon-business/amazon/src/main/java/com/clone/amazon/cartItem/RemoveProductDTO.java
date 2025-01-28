@@ -1,4 +1,8 @@
 package com.clone.amazon.cartItem;
 
-public record RemoveProductDTO() {
+public record RemoveProductDTO(
+        int productId,
+        String token,
+        String email
+) {
 }

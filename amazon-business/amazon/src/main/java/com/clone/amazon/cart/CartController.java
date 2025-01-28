@@ -1,9 +1,7 @@
 package com.clone.amazon.cart;
 
-import com.clone.amazon.cartItem.CartItemService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Map;
 
 @RestController
@@ -24,7 +22,7 @@ public class CartController {
         try {
             return ResponseEntity.ok().body(cartService.getCart(cartRequestDTO));
         } catch (Exception e) {
-            return ResponseEntity.ok().body(Map.of("message" ,"wrong credential"));
+            return ResponseEntity.badRequest().body(Map.of("message" ,"wrong credential"));
         }
     }
 
@@ -33,11 +31,8 @@ public class CartController {
         try {
             return ResponseEntity.ok().body(cartService.updateCartInfo(cartUpdateRequestDTO));
         } catch (Exception e) {
-            return ResponseEntity.ok().body(Map.of("message" ,"wrong credential"));
+            return ResponseEntity.badRequest().body(Map.of("message" ,"wrong credential"));
         }
     }
-
-
-
 
 }

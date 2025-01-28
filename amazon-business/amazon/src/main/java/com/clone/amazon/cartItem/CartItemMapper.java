@@ -31,6 +31,8 @@ public class CartItemMapper {
                 .quantity(cartItemRequestDTO.quantity())
                 .product(product)
                 .cart(cart)
+                .deliveryOptionId(1)
+                .deliveryCharge(0)
                 .build();
     }
 }

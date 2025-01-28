@@ -2,10 +2,7 @@ package com.clone.amazon.cartItem;
 
 import com.clone.amazon.cart.AddToCartDTO;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -18,7 +15,6 @@ public class CartItemController {
         this.cartItemService=cartItemService;
     }
 
-
     @PostMapping("/add")
     public ResponseEntity<?> addToCart(@RequestBody AddToCartDTO addToCartDTO){
         try {
@@ -27,4 +23,15 @@ public class CartItemController {
             return ResponseEntity.badRequest().body(Map.of("message" ,"wrong credential"));
         }
     }
+
+    @DeleteMapping("/remove")
+    public ResponseEntity<?> removeProductFromCart(@RequestBody RemoveProductDTO removeProductDTO){
+        try {
+            return ResponseEntity.accepted().body(cartItemService.removeProductFromCart(removeProductDTO));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("message" ,"wrong credential"));
+        }
+    }
+
+
 }

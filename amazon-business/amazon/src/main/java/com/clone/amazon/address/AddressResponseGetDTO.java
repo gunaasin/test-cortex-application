@@ -1,4 +1,7 @@
 package com.clone.amazon.address;
 
-public record AddressResponseGetDTO() {
+public record AddressResponseGetDTO(
+        String token,
+        String email
+) {
 }

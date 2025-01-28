@@ -1,5 +1,6 @@
 package com.clone.amazon.user;
 
+import com.clone.amazon.address.Address;
 import com.clone.amazon.cart.Cart;
 import com.clone.amazon.orders.Orders;
 import jakarta.persistence.*;
@@ -36,7 +37,10 @@ public class AmazonUser {
             nullable = false
     )
     private String phoneNumber;
-    private String address;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    private Address address;
 
     @OneToMany(mappedBy = "amazonUser")
     private List<Orders> orders;
