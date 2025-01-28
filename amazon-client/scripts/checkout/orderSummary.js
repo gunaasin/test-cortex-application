@@ -1,4 +1,4 @@
-import { cart, updateDeliveryOption, loadedCart } from "../../data/cart.js";
+import { cart, updateDeliveryOption, loadedCart,removeProductFromCart } from "../../data/cart.js";
 import { deliveryOptions, getDeleiveryOption ,getDeliveryDate } from "../../data/deliveryOptions.js";
 import { renderPaymentSummary } from "./paymentSummary.js";
 
@@ -105,11 +105,15 @@ export function resumeCheckOutRender(loadedCart) {
       link.addEventListener("click", () => {
         const delProId = link.getAttribute("data-producdId");
 
-        // deleteCart(delProId);
-        renderPaymentSummary();
+        // console.log(delProId)
+         renderPaymentSummary(loadedCart);
+         removeProductFromCart(delProId);
 
-        const removeDom = document.querySelector(`.js-cart-item-container-${delProId}`);
-        removeDom.remove();
+
+
+         
+         const removeDom = document.querySelector(`.js-cart-item-container-${delProId}`);
+         removeDom.remove();
 
 
       });
@@ -122,7 +126,7 @@ export function resumeCheckOutRender(loadedCart) {
         // console.log(element.getAttribute("data-productId"));
         // console.log(element.getAttribute("data-deliveryOption-Id"))
         updateDeliveryOption(element.getAttribute("data-productId"), element.getAttribute("data-deliveryOption-Id"));
-        // resumeCheckOutRender(loadedCart);
+        resumeCheckOutRender(loadedCart);
         
       });
     });

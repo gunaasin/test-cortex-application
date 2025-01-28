@@ -1,13 +1,16 @@
 import { getToken } from "../scripts/checkout.js";
 import { resumeCheckOutRender } from "../scripts/checkout/orderSummary.js";
 import { renderPaymentSummary } from "../scripts/checkout/paymentSummary.js";
+import { loadNav } from "../scripts/stylescripts/navbar.js";
+import { getEmailFromJWT } from "../scripts/util/util.js"
 
 export let loadedCart = [];
 
 export async function loadCartFromBackend(token) {
+  const email = getEmailFromJWT(token)
   const tokenObject = {
     token: token,
-    email: "max@gmail.com",
+    email: email,
   };
 
   try {
@@ -19,19 +22,23 @@ export async function loadCartFromBackend(token) {
       },
       body: JSON.stringify(tokenObject),
     });
+    const curerentWindow = window.location.href;
 
-    if (!response.ok) {
+    if (!response.ok && curerentWindow.match("/checkout" )) {
       console.error("Failed to fetch cart products. Redirecting to signin.");
+
       window.location.href = "/signin";
-      return; 
+    
+      // return null; 
+    //   if (response.status === 403 && !(curerentWindow.match("/amazon") || curerentWindow.match("/product") || curerentWindow.match("/"))) {
+      
+    // }
+      return;
     }
 
-    let loadedCart = await response.json(); 
-    loadedCart = loadedCart.map((item) => item); 
+    let loadedCart = await response.json();
+    loadedCart = loadedCart.map((item) => item);
     return loadedCart;
-    console.log("Cart products are loaded:", loadedCart);
-
-  
   } catch (error) {
     console.error("Error during fetching cart products:", error);
     // window.location.href = "/signin";
@@ -54,11 +61,18 @@ function setDataIntoLocalStorage() {
 // update the delivery option
 export function addProductInCart(request) {
   const token = getToken().token;
-  const productData ={
-    productId : request.productId,
-    quantity : request.quantity,
+  const email = getEmailFromJWT(token)
+  console.log(email)
+  const productData = {
+    productId: request.productId,
+    quantity: request.quantity,
     token: token,
-    email: "max@gmail.com"
+    email: email
+  }
+
+  const localInfo ={
+    token: token,
+    email: email
   }
 
   const postProduct = async (productData) => {
@@ -73,18 +87,58 @@ export function addProductInCart(request) {
       });
 
       if (!response.ok) {
-        cart.push(request);
-        setDataIntoLocalStorage();
         return new Error(`HTTP error :( ${response.status}`)
       }
-      updateCartCount();
-      console.log(' successfully:');
+      // updateCartCount();
+      loadNav(localInfo);
+      console.log(' successfully');
     } catch (error) {
+      window.location.href = "/signin";
       console.error("error", error);
     }
   }
   postProduct(productData);
 }
+
+
+// remove the product
+export function removeProductFromCart(id) {
+  const token = getToken().token;
+  const email = getEmailFromJWT(token)
+  const productData = {
+    productId: id,
+    token: token,
+    email: email
+  }
+
+  const removeoduct = async (productData) => {
+    try {
+      const endPoint = await fetch("http://localhost:8080/api/cart/remove", {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(productData)
+      });
+
+      if (!endPoint.ok) {
+
+        setDataIntoLocalStorage();
+        return new Error(`HTTP error :( ${endPoint.status}`)
+      }
+      // updateCartCount();
+      console.log(' successfully removed');
+      renderPaymentSummary(loadedCart);
+      window.location.href = "/checkout"
+    } catch (error) {
+      window.location.href = "/signin";
+      console.error("error", error);
+    }
+  }
+  removeoduct(productData);
+}
+
 
 
 
@@ -93,11 +147,12 @@ export function addProductInCart(request) {
 export function updateDeliveryOption(cartItemId, deliveryOptionId) {
 
   const token = getToken().token;
-  const productData ={
-    cartItemId : cartItemId,
-    deliveryOptionId : deliveryOptionId,
+  const email = getEmailFromJWT(token)
+  const productData = {
+    cartItemId: cartItemId,
+    deliveryOptionId: deliveryOptionId,
     token: token,
-    email: "max@gmail.com"
+    email: email
   }
 
   const postProduct = async (productData) => {
@@ -114,13 +169,13 @@ export function updateDeliveryOption(cartItemId, deliveryOptionId) {
       if (!response.ok) {
         return new Error(`HTTP error :( ${response.status}`)
       }
-      loadedCart.length=0;
+      loadedCart.length = 0;
       loadedCart = await response.json();
       resumeCheckOutRender(loadedCart);
       renderPaymentSummary(loadedCart);
-      // console.log('loadedCart successfully:', loadedCart);
     } catch (error) {
       console.error("error", error);
+      window.location.href = "/signin";
     }
   }
   postProduct(productData);

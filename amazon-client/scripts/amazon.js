@@ -1,8 +1,6 @@
 import { loadedCart ,addProductInCart } from "../data/cart.js";
-import { deliveryOptions } from "../data/deliveryOptions.js";
 import { products, loadProductFromBackend, loadProductBasedOnSearch } from "../data/products.js";
 import { loadFilterFunction } from "./stylescripts/productfilter.js";
-// import './stylescripts/pricerangesetter.js';
 import './stylescripts/fotter.js';
 import './stylescripts/backtotop.js';
 
@@ -17,7 +15,7 @@ const searchBarData = document.getElementById("search-bar");
 const searchBtn = document.getElementById("search-btn");
 document.addEventListener("DOMContentLoaded", () => {
   searchBarData.addEventListener("keydown", (event) => {
-    if (event.key === "Enter" && searchBarData.value!="" ) {
+    if (event.key === "Enter" && searchBarData.value!=="" ) {
       let keyword = searchBarData.value;
       console.log(keyword)
       products.length = 0;
@@ -31,12 +29,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     searchBtn.addEventListener("click", () => {
       let keyword = searchBarData.value;
-      // products.length = 0;
+      products.length = 0;
       someData.categories.length = 0;
-      loadProductBasedOnSearch(keyword).then(() => {
-        products.length === 0 ? loadProductNotFound() : loadTheProduct();
-        loadFilterFunction();
-      });
+      if(keyword){
+        loadProductBasedOnSearch(keyword).then(() => {
+          products.length === 0 ? loadProductNotFound() : loadTheProduct();
+          loadFilterFunction();
+        });
+      }
       searchBarData.value = "";
     });
   })

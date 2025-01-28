@@ -4,6 +4,8 @@ document.addEventListener("DOMContentLoaded", () => {
   loadFilterFunction();
 })
 
+console.log(someData.categories)
+
 export function loadFilterFunction(){
   
     // Define filter section HTML

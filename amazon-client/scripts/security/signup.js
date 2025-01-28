@@ -3,7 +3,7 @@ import { errorMessages } from './message.js';
 import { showError, clearError } from './ui.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    // const form = document.querySelector('.auth-form');
+    const form = document.getElementById('signup-form');
     const submit = document.getElementById('submit');
     const nameInput = document.getElementById('name');
     const mobileInput = document.getElementById('mobile');
@@ -66,6 +66,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 password: passwordInput.value
             };
 
+            console.log(userData)
+
             const user = async (userData) => {
                 try{
                     const response = await fetch("http://localhost:8080/api/auth/signUp" ,{
@@ -80,6 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     const data = await response.json();
                     console.log('signup succsess:' , data);
+                    form.reset();
+                    window.location.href="signin";
                 }catch(error){
                     console.error('error ', error);
                 }finally{

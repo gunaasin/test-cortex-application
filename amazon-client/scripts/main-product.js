@@ -1,8 +1,9 @@
 import "./stylescripts/navbar.js";
 import "./stylescripts/fotter.js";
 import "./stylescripts/backtotop.js";
-import { cart } from "../data/cart.js";
+import { loadedCart } from "../data/cart.js";
 import "./relatedProductItem.js";
+import { addProductInCart } from "../data/cart.js";
 import getStarRating from "./util/starRatingGenarater.js";
 import "./review.js";
 
@@ -38,7 +39,7 @@ document.querySelector(".product-grid")
                 <div class="price-block">
                        ${product.price > 1000 ? ` <div class="deal"> <p>Today Deal</p> </div>` : ""}
                     <div class="price">
-                      <p class="discount">MRP: <span>₹ ${(product.price*32 /100) + product.price }</span></p>
+                      <p class="discount">MRP: <span>₹ ${(product.price * 32 / 100) + product.price}</span></p>
                         <span class="currency">₹</span>
                         <span class="amount">${product.price}</span>
                         <span class="cents">.00</span>
@@ -99,7 +100,7 @@ document.querySelector(".product-grid")
                     <span class="currency">₹</span>
                     <span class="amount">${product.price}</span>
                     <span class="cents">.00</span>
-                      <p class="discount">MRP: <span>₹ ${(product.price*32 /100) + product.price }</span></p>
+                      <p class="discount">MRP: <span>₹ ${(product.price * 32 / 100) + product.price}</span></p>
                 </div>
                 
                 <div class="delivery">
@@ -142,7 +143,7 @@ selectQuatity.forEach((select) => {
 });
 
 document.getElementById('share-product').addEventListener('click', () => {
-    
+
 })
 
 // add to cart array section
@@ -154,7 +155,7 @@ function addToCartFunction(productId) {
         select.value = 1;
     })
 
-    cart.forEach((item) => {
+    loadedCart.forEach((item) => {
         if (item.productId === productId) {
             productIsThere = item;
         }
@@ -167,11 +168,11 @@ function addToCartFunction(productId) {
             productIsThere.quantity += 1;
         }
     } else {
-        cart.push({
+        const Request = {
             productId: productId,
-            quantity: selectedValue,
-            deleiveryOptionId: '1'
-        });
+            quantity: selectedValue
+        }
+        addProductInCart(Request);
     }
 }
 
@@ -184,7 +185,7 @@ addToCart.forEach((button) => {
         const productId = button.getAttribute("data-product-id");
         console.log(productId)
         addToCartFunction(productId);
-        updateCartQuatity();
+
     });
 });
 
@@ -195,8 +196,6 @@ document.querySelector(".buy-now").addEventListener("click", () => {
     console.log("drg")
     window.location.href = "payment";
 })
-
-
 
 
 

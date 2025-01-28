@@ -2,7 +2,6 @@ import './stylescripts/navbar.js';
 import './stylescripts/fotter.js';
 import './stylescripts/backtotop.js';
 
-console.log(JSON.parse(localStorage.getItem("token")));
 
 // adv index to product page
 document.querySelectorAll(".adv-img").forEach((element)=>{

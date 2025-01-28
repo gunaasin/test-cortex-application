@@ -63,6 +63,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         console.warn(`Unexpected status code: ${response.status}`);
                     }
     
+                    if(localStorage.getItem("datacart")){
+                        localStorage.removeItem("datacart")
+                    }
+
                     localStorage.setItem("datacart",JSON.stringify(await response.json()));
                     console.log('signin key');
                     //  More appropriate message   

@@ -1,6 +1,5 @@
 import { pageNotFont404 } from "../scripts/stylescripts/pageNotFound.js";
 
-
 export let products = [];
 export let cart = [];
 
@@ -15,8 +14,7 @@ export function loadProductFromBackend() {
   const promise = fetch(`http://localhost:8080/api/main/products?enc=${keywords}`, {
     method: "GET",
     headers: {
-      "Content-Type": "application/json",// Optional, depending on backend
-      // "Authorization": `Bearer ${token}`
+      "Content-Type": "application/json",
     },
   }).then((response) => {
 
@@ -35,36 +33,6 @@ export function loadProductFromBackend() {
   return promise;
 }
 
-// export function loadCartFromBackend() {
-//   let token = null;
-//   try {
-//     token = JSON.parse(localStorage.getItem('token')).message;
-//   } catch (error) {
-//     console.log(error);
-//   }
-//   const promise = fetch('http://localhost:8080/api/cart/product',
-//     {
-//       method: "GET",
-//       headers: {
-//         "Content-Type": "application/json",
-//         "Authorization": `Bearer ${token}`
-//       },
-//     }
-//   ).then((response) => {
-//     return response.json();
-//   }).then((productData) => {
-//     cart = productData.map((item) => {
-//       return item;
-//     });
-
-//     console.log('cart products are loaded');
-//   }).catch((error) => {
-//     console.error("some thing is wrong please try again later :(");
-//     console.error(error);
-//   });
-
-//   return promise;
-// }
 
 
 export function loadProductBasedOnSearch(keyword) {

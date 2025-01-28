@@ -29,7 +29,7 @@ export function renderPaymentSummary(loadedCart) {
           </div>
 
           <div class="payment-summary-row">
-            <div>Items (${cart.length}):</div>
+            <div>Items price:</div>
             <div class="payment-summary-money">₹ ${totalproductPrice}</div>
           </div>
 

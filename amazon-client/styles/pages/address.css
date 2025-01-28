@@ -46,7 +46,7 @@ header h1 {
 }
 
 .address-list{
-    gap: 20px;
+    gap: 10px;
     display: flex;
     flex-wrap: wrap;
 }
@@ -88,7 +88,7 @@ header h1 {
 }
 
 .address-card {
-    width: 200px;
+    width: 290px;
     min-height: 230px;
     background: white;
     border-radius: 8px;

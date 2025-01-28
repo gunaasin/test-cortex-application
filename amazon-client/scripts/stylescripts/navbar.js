@@ -1,7 +1,57 @@
 import { products } from "../../data/products.js";
+import { getToken } from "../checkout.js";
+import { getEmailFromJWT } from "../util/util.js";
 const navbar = document.getElementById("amazon-nav");
 
-navbar.innerHTML = `
+
+
+// update the delivery optio
+let navInfo = {
+    address : null,
+    name : null,
+    cartCount:null
+};
+
+const token = getToken().token;
+const email = getEmailFromJWT(token);
+
+const localInfo = {
+    token: token,
+    email: email
+}
+export const loadNav = async (localInfo) => {
+    try {
+        const response = await fetch("http://localhost:8080/api/information", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify(localInfo),
+        });
+
+        if (!response.ok) {
+            if (response.status === 403) {
+                console.warn("Access forbidden. Please check your token or permissions."); 
+              } 
+        }
+
+        navInfo = await response.json(); 
+       
+    } catch (error) {
+        console.error("Error during API call:", error);
+    }finally{
+        loadNavBar(navInfo);
+    }
+};
+
+loadNav(localInfo);
+loadNavBar(navInfo);
+
+
+function loadNavBar(navInfo){
+    const {address , name , cartCount} = navInfo ;
+    navbar.innerHTML = `
     <div class="amazon-header-left-section">
         <a href="/" class="header-link">
             <img class="amazon-logo" src="images/amazon-logo-white.png">
@@ -10,12 +60,12 @@ navbar.innerHTML = `
         </a>
     </div>
 
-    <div class="amazon-header-left-second">
+    <button class="amazon-header-left-second" id="nav-address">
         <p class="delivery-location">
-            Delivering to Bengaluru 562129
+            ${name===null ? " update address" : `Deliver to ${name}` }
         </p>
-        <h3 class="update-location"><i class="fas fa-map-marker-alt"></i> &nbsp;Update location</h3>
-    </div>
+        <h3 class="update-location"><i class="fas fa-map-marker-alt"></i> &nbsp; ${address === null ? "Update location" : address}</h3>
+    </button>
 
     <div class="amazon-header-middle-section">
         <select id="options" class="landing-search-options">
@@ -43,7 +93,7 @@ navbar.innerHTML = `
     </div>
 
     <a href="amazonUser" class="amazon-header-right-second">
-        <p class="sign-in-nav"> Hello, Sign in </p>
+        <p class="sign-in-nav"> Hello, ${name===null ? " Sign in" : name } </p>
         <h3 class="account-list-nav"> Account & list</h3>
     </a>
 
@@ -55,39 +105,22 @@ navbar.innerHTML = `
         <a class="cart-link header-link" href="checkout">
             <img class="cart-icon" src="images/icons/cart-icon.png">
 
-            <div class="cart-quantity">0</div>
+            <div class="cart-quantity">${cartCount=== null ? "0" : cartCount}</div>
             <div class="cart-text">Cart</div>
         </a>
     </div>
 `;
 
-const searchBarData = document.getElementById("search-bar");
-const searchBtn = document.getElementById("search-btn");
-document.addEventListener("DOMContentLoaded", () => {
-
-    searchBarData.addEventListener("keydown", (event) => {
-        if (event.key === "Enter") {
-        
-            let keyword = searchBarData.value.trim();
-            window.location.href = `amazon?ds=${encodeURIComponent(btoa(JSON.stringify(keyword)))}`;
-        }
-    });
-
-    searchBtn.addEventListener("click", () => {
-
-        let keyword = searchBarData.value.trim();
-        window.location.href = `amazon?ds=${encodeURIComponent(btoa(JSON.stringify(keyword)))}`;
-    })
-});
+    
 
 
 
-const mobileNav = document.getElementById("amazon-nav-mobile");
-mobileNav.innerHTML=`
+    const mobileNav = document.getElementById("amazon-nav-mobile");
+    mobileNav.innerHTML = `
     <div class="amazon-header-nav">
-        <h3 class="update-location-nav"><i class="fas fa-map-marker-alt"></i> &nbsp;Update location</h3>
+        <h3 class="update-location-nav"><i class="fas fa-map-marker-alt"></i> &nbsp;${address === null ? "Update location" : address}</h3>
         <p class="delivery-location-nav">
-            Delivering to Bengaluru 562129
+             Deliver to ${name}
         </p>
     </div>
     <div class="mobile-nav-element">
@@ -106,5 +139,33 @@ mobileNav.innerHTML=`
 `
 
 
+const searchBarData = document.getElementById("search-bar");
+    const searchBtn = document.getElementById("search-btn");
+
+    // document.addEventListener("DOMContentLoaded", () => {
+        searchBarData.addEventListener("keydown", (event) => {
+            if (event.key === "Enter") {
+                console.log("helooo")
+                let keyword = searchBarData.value.trim();
+                window.location.href = `amazon?ds=${encodeURIComponent(btoa(JSON.stringify(keyword)))}`;
+            }
+        });
+
+        searchBtn.addEventListener("click", () => {
+            console.log("helooo")
+            let keyword = searchBarData.value.trim();
+            window.location.href = `amazon?ds=${encodeURIComponent(btoa(JSON.stringify(keyword)))}`;
+            
+        })
+
+        document.getElementById("nav-address").addEventListener("click",()=>{
+            window.location.href="/address";
+        })
 
 
+    // });
+
+}
+
+
+  

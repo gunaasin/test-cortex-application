@@ -16,7 +16,6 @@
   height: 60px;
 }
 
-
 .nav-in-text{
   margin-top: 7px;
   padding: 2px;
@@ -26,8 +25,8 @@
 
 .amazon-header-left-section {
   width: 140px;
-
 }
+
 .landing-search-options{
   background-color: rgb(184, 184, 184);
   border: none;
@@ -41,13 +40,15 @@
   }
 }
 
-
 .amazon-header-left-second{
   display: flex;
+  border: none;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
   justify-content: center;
-  width: 200px;
+  width: 180px;
+  background-color: transparent;
+  color: #ffffff;
   height: 50px;
   border-radius: 2px;
   &:hover{
@@ -55,20 +56,26 @@
   }
 }
 
-
 .delivery-location{
   font-size: 12px;
   margin: 2px 0px ;
   color: rgb(206, 202, 202);
   padding: 4px 5px 0px 7px ;
 }
+
 .update-location{
   font-size: 15px;
-  
   margin: 0px;
-  padding: 4px 3px 4px 7px ;
+  padding: 4px  ;
   margin-bottom: 3px;
+  display: block;            /* Ensure the element behaves like a block for better control */
+  max-width: 100%;           /* Adjust width as needed */
+  max-height: 4.8em;         /* Adjust based on font size and line height */
+  overflow: hidden;          /* Hide overflowing content */
+  text-overflow: ellipsis;   /* Adds "..." for overflowed text */
+  white-space: nowrap;  
 }
+
 .amazon-header-right-second{
   text-decoration: none;
   color:white ;
@@ -79,11 +86,13 @@
     border: 1.5px solid rgb(255, 255, 255);
   }
 }
+
 .sign-in-nav{
   font-size: 12px;
   margin: 2px 0px 3px 0px;
   padding: 5px 5px 0px;
 }
+
 .account-list-nav{
   font-size: 15px;
   margin: 0px;
@@ -114,8 +123,6 @@
   display: none;
 }
 
-
-
 .amazon-header-middle-section {
   flex: 1;
   max-width: 750px;
@@ -133,12 +140,13 @@
   padding-left: 15px;
   border: none;
   border-radius: 0px;
-  
 }
 .search-bar:focus{
   border: none;
   outline: none;
 }
+
+
 
 .search-button {
   background-color: rgb(254, 189, 105);
@@ -168,7 +176,6 @@
   width: 100px;
   color: white;
 }
-
 
 .orders-text {
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -244,8 +251,15 @@
 }
 
 .update-location-nav{
+  width: 170px;
   font-size: 10px;
   color: aliceblue;
+  display: block;            /* Ensure the element behaves like a block for better control */
+  /* max-width: 100%;           Adjust width as needed */
+  max-height: 4.8em;         /* Adjust based on font size and line height */
+  overflow: hidden;          /* Hide overflowing content */
+  text-overflow: ellipsis;   /* Adds "..." for overflowed text */
+  white-space: nowrap;  
 }
 .hamburger {
   padding: 4px;
@@ -311,7 +325,8 @@
   }
 
   .amazon-header-left-second{
-    width: 25%;
+    width: 15%;
+    margin: 0px 5px 0px 25px;
   }
 }
 
@@ -341,7 +356,6 @@
     width: 12%;
   }
 
-  /* mobile */
   .amazon-header-mobile{
     display: flex;
     top: 52px;
