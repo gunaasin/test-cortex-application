@@ -1,4 +1,5 @@
 class Cart{
+    
     cartItems= undefined;
 
     updateLocalStorage() {

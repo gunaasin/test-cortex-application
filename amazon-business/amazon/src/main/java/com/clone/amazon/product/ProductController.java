@@ -3,6 +3,7 @@ package com.clone.amazon.product;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -47,11 +48,16 @@ public class ProductController {
     }
 
     @GetMapping("main/products")
-    public ResponseEntity<List<ProductResponseDTO>> getAllProductBasedOnUserSelectADV(
+    public ResponseEntity<?> getAllProductBasedOnUserSelectADV(
             @RequestParam String enc
     ){
-        var response = productService.getProductByADV(enc);
+        System.out.println(enc);
+        if(enc!=null){
+            var response = productService.getProductByADV(enc);
         return ResponseEntity.ok(response);
+
+        }
+        return ResponseEntity.badRequest().body(Map.of("message","wrong one" ));
     }
 }
 

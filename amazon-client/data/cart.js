@@ -4,6 +4,7 @@ import { renderPaymentSummary } from "../scripts/checkout/paymentSummary.js";
 import { loadNav } from "../scripts/stylescripts/navbar.js";
 import { getEmailFromJWT } from "../scripts/util/util.js"
 
+
 export let loadedCart = [];
 
 export async function loadCartFromBackend(token) {
@@ -29,16 +30,12 @@ export async function loadCartFromBackend(token) {
 
       window.location.href = "/signin";
     
-      // return null; 
-    //   if (response.status === 403 && !(curerentWindow.match("/amazon") || curerentWindow.match("/product") || curerentWindow.match("/"))) {
-      
-    // }
       return;
     }
 
-    let loadedCart = await response.json();
-    loadedCart = loadedCart.map((item) => item);
-    return loadedCart;
+     return  await response.json();
+    // loadedCart = loadedCart.map((item) => item);
+    // return loadedCart;
   } catch (error) {
     console.error("Error during fetching cart products:", error);
     // window.location.href = "/signin";
@@ -140,11 +137,8 @@ export function removeProductFromCart(id) {
 }
 
 
-
-
-
 // update the delivery option
-export function updateDeliveryOption(cartItemId, deliveryOptionId) {
+export function updateDeliveryOption(cartItemId, deliveryOptionId , loadedCart) {
 
   const token = getToken().token;
   const email = getEmailFromJWT(token)
@@ -167,17 +161,23 @@ export function updateDeliveryOption(cartItemId, deliveryOptionId) {
       });
 
       if (!response.ok) {
+        window.location.href = "/signin";
         return new Error(`HTTP error :( ${response.status}`)
       }
-      loadedCart.length = 0;
-      loadedCart = await response.json();
-      resumeCheckOutRender(loadedCart);
-      renderPaymentSummary(loadedCart);
+      
+        loadedCart.length = 0;
+        loadedCart = await response.json();
+         renderPaymentSummary(loadedCart);
+         resumeCheckOutRender(loadedCart);
+        return;  
+      
     } catch (error) {
       console.error("error", error);
-      window.location.href = "/signin";
+    }
+    finally{
+      
     }
   }
-  postProduct(productData);
+  postProduct(productData)
 
 }

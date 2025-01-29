@@ -7,13 +7,13 @@
     display: flex;
     /* flex-wrap: wrap; */
     /* align-items: center; */
-    justify-content: space-between;
+    justify-content: left;
     font-family: Arial, sans-serif;
 }
 
 /* Reviews Summary */
 .reviews-summary {
-    width: 30%;
+    width: 900px;
     border-right: 1px solid #e7e7e7;
     padding:  20px;
     /* margin-bottom: 20px; */
@@ -301,7 +301,7 @@
     }
 
     .reviews-summary {
-        width: 80%;
+        width: 1300px;
     }
 
     .review {

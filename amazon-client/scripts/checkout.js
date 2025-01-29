@@ -16,16 +16,17 @@ export function getToken() {
 }
 
 
+
+
 export async function checkoutProcess() {
   try {
     const loadedCart = await loadCartFromBackend(getToken().token)
     resumeCheckOutRender(loadedCart);
     renderPaymentSummary(loadedCart);
   } catch (error) {
-    // console.error("Something is wrong during the checkout process!", error);
+    console.error("Something is wrong during the checkout process!", error);
   }
 }
-
 checkoutProcess();
 
 

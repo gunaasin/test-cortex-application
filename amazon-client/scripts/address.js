@@ -5,7 +5,6 @@ import { getToken } from "./checkout.js";
 import { getEmailFromJWT } from "./util/util.js";
 
 let getAddress = [];
-let editingAddressId = null;
 
 // DOM Elements
 const addAddressCard = document.getElementById("addAddressCard");
@@ -35,11 +34,12 @@ function loadAddress() {
       );
 
       if (!response.ok) {
+          window.location.href="/signin";
         throw new Error(`HTTP error: ${response.status}`);
       }
 
       const res = await response.json();
-      console.log("Addresses fetched successfully:", res);
+    //   console.log("Addresses fetched successfully:", res);
       return res;
     } catch (error) {
       console.error("Error fetching addresses:", error);
@@ -49,7 +49,10 @@ function loadAddress() {
   getAddressInfo().then((response) => {
     if (response) {
       getAddress = response;
-      if(getAddress.pinCode!=="000000") addAddressCard.style.display = "none";
+      console.log(getAddress.name)
+      if(getAddress.name!==null) {
+        addAddressCard.style.display = "none";
+       }
       renderAddresses();
     }
 
@@ -94,7 +97,7 @@ addressForm.addEventListener("submit", (e) => {
 
       const res = await response.json();
       console.log("Address saved successfully:", res);
-      renderAddresses
+      renderAddresses();
       return res;
     } catch (error) {
       console.error("Error saving address:", error);
@@ -102,14 +105,11 @@ addressForm.addEventListener("submit", (e) => {
   };
 
   postAddress(addressData).then((response) => {
-    if (editingAddressId) {
-      const index = getAddress.findIndex((addr) => addr.id === editingAddressId);
-      getAddress[index] = response;
-    } else {
-      getAddress.push(response);
-    }
+
     addressModal.style.display = "none";
+    loadAddress()
     renderAddresses();
+    // window.location.href="/address";
     addressForm.reset();
   });
 });
@@ -143,9 +143,8 @@ async function deleteAddress(id) {
 // Render addresses
 function renderAddresses() {
     const addr = getAddress;
-
     addressList.innerHTML = "";
-    if(addr.name!=="delivery name"){
+    if(addr.name!==null && addr.name!==undefined){
 
         const addressCard = document.createElement("div");
         addressCard.className = "address-card";
@@ -175,7 +174,6 @@ function showModal(address) {
   addressModal.style.display = "block";
 
   if (address) {
-    editingAddressId = address.id;
     modalTitle.textContent = "Edit address";
     submitBtn.textContent = "Update address";
 

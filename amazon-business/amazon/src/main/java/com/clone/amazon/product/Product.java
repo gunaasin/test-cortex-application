@@ -24,9 +24,11 @@ public class Product {
     @SequenceGenerator(name = "product_seq", sequenceName = "product_sequence", initialValue = 1000, allocationSize = 1)
     private Integer id;
 
-    @Column(nullable = false)
+    @Column(nullable = false,
+             length = 600)
     private String name;
 
+    @Column(length = 600)
     private String description;
 
     @Column(nullable = false)

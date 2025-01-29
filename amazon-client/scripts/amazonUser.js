@@ -4,12 +4,12 @@ import "./stylescripts/backtotop.js";
 
 const accountOptions = [
     {
-        image: "https://m.media-amazon.com/images/G/31/x-locale/cs/ya/images/Box._CB485927553_.png",
+        image: "https://pixcap.com/cdn/library/templates/055d029c-03c8-4ca5-9efa-57299c1148ad/thumbnail/937c83d9-0c59-4236-ac7d-d97a61bcd0c8_transparent_null_400.webp",
         title: "Your Orders",
         description: "Track, return, or buy things again"
     },
     {
-        image: "https://m.media-amazon.com/images/G/31/x-locale/cs/ya/images/sign-in-lock._CB485931504_.png",
+        image: "https://pixcap.com/cdn/library/template/1717768140946/thumbnail/Locked_3D_Icon_Model_For_UI_transparent_400_emp.webp",
         title: "Login & security",
         description: "Edit login, name, and mobile number"
     },
@@ -19,7 +19,7 @@ const accountOptions = [
         description: "Logout account"
     },
     {
-        image: "https://m.media-amazon.com/images/G/31/x-locale/cs/ya/images/address-map-pin._CB485934183_.png",
+        image: "https://pixcap.com/cdn/library/template/1727207939385/thumbnail/Package_Location_3D_Icon_transparent_emp_400.webp",
         title: "Your Addresses",
         description: "Edit addresses for orders and gifts"
     },
@@ -29,12 +29,12 @@ const accountOptions = [
         description: "Sign up for free to save up to 28% with GST invoice and bulk discounts and purchase on credit."
     },
     {
-        image: "https://m.media-amazon.com/images/G/31/x-locale/cs/ya/images/Payments._CB485926359_.png",
+        image: "https://pixcap.com/cdn/library/template/1718302332148/thumbnail/Amazon_Pay_3D_Icon_Payment_transparent_800_emp.webp",
         title: "Payment options",
         description: "Edit or add payment methods"
     },
     {
-        image: "https://m.media-amazon.com/images/G/31/x-locale/cs/help/images/gateway/self-service/contact_us._CB623781998_.png",
+        image: "https://pixcap.com/cdn/library/template/1729871678150/thumbnail/Complain_To_Customer_Service_3D_Icon_transparent_emp_400.webp",
         title: "Contact Us",
         description: "Contact our customer service via phone or chat"
     }

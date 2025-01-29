@@ -1,5 +1,6 @@
 import "./stylescripts/fotter.js";
 import "./stylescripts/backtotop.js"
+// import { getEmailFromJWT } from "./util/util.js";
 
 document.querySelector('.app').innerHTML = `
   <div class="header">
@@ -76,10 +77,28 @@ document.querySelector('.app').innerHTML = `
   </div>
 `
 
+
+function getToken() {
+  try {
+    const storedToken = localStorage.getItem('datacart');
+    return storedToken === null ? window.location.href = "/signin" : JSON.parse(storedToken);
+  } catch (error) {
+    console.error("Failed to parse token from localStorage:", error);
+    return null;
+  }
+}
+
 // Form submission handling
 const form = document.getElementById('productForm');
 form.addEventListener('submit', (e) => {
   e.preventDefault();
+  const token = getToken().token;
+  // const email = getEmailFromJWT(token)
+  // console.log(email)
+  // const auth = {
+  //   token: token,
+  //   email: email
+  // }
 
   const productData = {
     name: document.getElementById('name').value,
@@ -101,7 +120,8 @@ form.addEventListener('submit', (e) => {
       const response = await fetch("http://localhost:8080/api/products", {
         method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(productData)
       });

@@ -1,12 +1,10 @@
-import { products } from "../../data/products.js";
 import { getToken } from "../checkout.js";
 import { getEmailFromJWT } from "../util/util.js";
+
 const navbar = document.getElementById("amazon-nav");
 
-
-
-// update the delivery optio
-let navInfo = {
+// update the delivery 
+export let navInfo = {
     address : null,
     name : null,
     cartCount:null

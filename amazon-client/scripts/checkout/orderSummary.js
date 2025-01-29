@@ -106,7 +106,7 @@ export function resumeCheckOutRender(loadedCart) {
         const delProId = link.getAttribute("data-producdId");
 
         // console.log(delProId)
-         renderPaymentSummary(loadedCart);
+        renderPaymentSummary(loadedCart);
          removeProductFromCart(delProId);
 
 
@@ -125,7 +125,7 @@ export function resumeCheckOutRender(loadedCart) {
 
         // console.log(element.getAttribute("data-productId"));
         // console.log(element.getAttribute("data-deliveryOption-Id"))
-        updateDeliveryOption(element.getAttribute("data-productId"), element.getAttribute("data-deliveryOption-Id"));
+        updateDeliveryOption(element.getAttribute("data-productId"), element.getAttribute("data-deliveryOption-Id") , loadedCart);
         resumeCheckOutRender(loadedCart);
         
       });

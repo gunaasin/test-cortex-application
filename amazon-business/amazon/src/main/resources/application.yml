@@ -11,6 +11,10 @@ spring:
       ddl-auto: update
     database: postgresql
     show-sql: true
+  security:
+    jwt:
+      expiration: 86400000
+      refresh-token: 604800000
 
 #  security:
 #    oauth2:

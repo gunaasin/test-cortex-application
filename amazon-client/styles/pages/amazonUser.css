@@ -20,7 +20,7 @@ body {
 
 #app {
     max-width: 1000px;
-    margin: 50px auto;
+    margin: 100px auto;
     padding: 20px;
 }
 
@@ -63,7 +63,8 @@ header h1 {
 }
 
 .img-Container img{
-    width: 60px; 
+    width: 40px; 
+    object-fit: contain;
     padding-right:10px ;
 }
 

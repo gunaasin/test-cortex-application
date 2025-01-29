@@ -9,8 +9,8 @@ import "./review.js";
 
 
 const params = new URLSearchParams(window.location.search);
-const product = JSON.parse(atob(decodeURIComponent(params.get("d"))));
-console.log(product);
+export const product = JSON.parse(atob(decodeURIComponent(params.get("d"))));
+
 
 document.querySelector(".product-grid")
     .innerHTML = `

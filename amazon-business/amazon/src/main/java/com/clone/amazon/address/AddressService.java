@@ -2,25 +2,17 @@ package com.clone.amazon.address;
 
 import com.clone.amazon.security.JwtService;
 import com.clone.amazon.user.AmazonUserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class AddressService {
     private final AddressRepo addressRepo;
     private final JwtService jwtService;
     private final AmazonUserRepository amazonUserRepository;
 
-    public AddressService(AddressRepo addressRepo,
-                          JwtService jwtService,
-                          AmazonUserRepository amazonUserRepository
-                          ){
-        this.addressRepo=addressRepo;
-        this.jwtService=jwtService;
-        this.amazonUserRepository=amazonUserRepository;
-    }
-
     public Object addAddress(AddressRequestDTO addressRequestDTO) {
-
         try {
             if (jwtService.validateToken(addressRequestDTO.token(), addressRequestDTO.email())) {
                 var email = jwtService.extractMailId(addressRequestDTO.token());

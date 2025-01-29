@@ -1,24 +1,18 @@
 package com.clone.amazon.user;
 import com.clone.amazon.address.Address;
 import com.clone.amazon.cart.Cart;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class AmazonUserMapper {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public AmazonUserMapper(BCryptPasswordEncoder bCryptPasswordEncoder){
-        this.bCryptPasswordEncoder=bCryptPasswordEncoder;
-    }
-    Address defaultAddress = Address.builder()
-            .streetAddress("Default Street")
-            .city("Default City")
-            .state("Default State")
-            .pinCode("000000")
-            .fullName("delivery name")
-            .phoneNumber("phone number")
-            .build();
+//    public AmazonUserMapper(BCryptPasswordEncoder bCryptPasswordEncoder){
+//        this.bCryptPasswordEncoder=bCryptPasswordEncoder;
+//    }
 
     public AmazonUser convertToUser(AmazonUserRequestDTO dto){
         AmazonUser amazonUser = AmazonUser.builder()
@@ -28,7 +22,7 @@ public class AmazonUserMapper {
                 .password(dto.password())
                 .role("user")
                 .cart(new Cart())
-                .address(defaultAddress)
+                .address(new Address())
                 .build();
         amazonUser.setPassword(bCryptPasswordEncoder.encode(amazonUser.getPassword()));
         return amazonUser;

@@ -1,29 +1,24 @@
 package com.clone.amazon.user;
 
 import com.clone.amazon.security.JwtBlockListService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/auth")
 public class AmazonUserController {
     private final AmazonUserService userService;
     private final JwtBlockListService jwtBlacklistService;
 
-    public AmazonUserController(AmazonUserService userService , JwtBlockListService jwtBlacklistService){
-        this.userService = userService;
-        this.jwtBlacklistService=jwtBlacklistService;
-    }
 
     @PostMapping("/signUp")
     public ResponseEntity<?> saveUser(@RequestBody AmazonUserRequestDTO dto) {
         try {
-            System.out.println(dto);
-//            AmazonUserResponseDTO savedUser = userService.saveUser(dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser(dto));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -51,7 +46,6 @@ public class AmazonUserController {
 
     @PostMapping("/logout")
     public ResponseEntity<?> logout(@RequestBody LogOutDTO logOutDTO) {
-        System.out.println(logOutDTO);
         jwtBlacklistService.blacklistToken(logOutDTO.token());
         return ResponseEntity.status(HttpStatus.ACCEPTED)
                 .body(Map.of("message", "Logged out successfully"));

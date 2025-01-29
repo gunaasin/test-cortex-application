@@ -1,9 +1,9 @@
 package com.clone.amazon.review;
 
-import lombok.Builder;
-
-@Builder
-public record ReviewDTO(
+public record ReviewRequestDTO(
+        String token,
+        String email,
+        int id,
         String name,
         int rating,
         String title,

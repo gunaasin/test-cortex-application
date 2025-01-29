@@ -1,5 +1,10 @@
-// Initial reviews data
-let reviews = [
+import { navInfo } from "./stylescripts/navbar.js";
+import { product } from "./main-product.js";
+import { getToken } from "./checkout.js";
+import { getEmailFromJWT } from "./util/util.js";
+
+// / Initial reviews data
+let review = [
     {
         id: 1,
         name: "John D.",
@@ -33,7 +38,7 @@ const reviewsHtml = document.querySelector(".reviews-container");
                         <div class="stars"></div>
                         <span class="rating-text">4.5 out of 5</span>
                     </div>
-                    <span class="total-ratings">2,354 global ratings</span>
+                    <span class="total-ratings">global ratings</span>
                 </div>
                
                 <div class="rating-bars">
@@ -178,10 +183,24 @@ function highlightStars(rating) {
     });
 }
 
-// Render reviews
+// "reviews": [
+//             {
+//                 "name": "Guna",
+//                 "rating": 4,
+//                 "title": "good one ",
+//                 "content": "good",
+//                 "date": "January 29, 2025",
+//                 "helpful": 0,
+//                 "verified": false
+//             }
+//         ],
+
+console.log(product)
+// Render reviews''
 function renderReviews() {
     const reviewsList = document.getElementById('reviews-list');
-    reviewsList.innerHTML = reviews.map(review => `
+    const review = product.reviews;
+    reviewsList.innerHTML = review.map(review => `
         <div class="review">
             <div class="review-header">
                 <div class="reviewer-avatar">
@@ -213,10 +232,16 @@ function setupReviewForm() {
         const title = document.getElementById('review-title').value;
         const content = document.getElementById('review-content').value;
         const rating = document.querySelectorAll('.star-rating .star.active').length;
-
+        const name = navInfo.name;
+        const token = getToken().token;
+        const email = getEmailFromJWT(token);
+        
         const newReview = {
-            id: reviews.length + 1,
-            name: "Anonymous User",
+
+            token: token,
+            email: email,
+            id: product.id,
+            name: name,
             rating,
             title,
             content,
@@ -225,7 +250,37 @@ function setupReviewForm() {
             verified: false
         };
 
-        reviews.unshift(newReview);
+
+      
+         const updateReview = async (newReview) => {
+            try {
+                const response = await fetch("http://localhost:8080/api/write/review", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`
+                    },
+                    body: JSON.stringify(newReview),
+                });
+        
+                if (!response.ok) {
+                    if (response.status === 403) {
+                        window.location.href="/signin";
+                        console.warn("Access forbidden. Please check your token or permissions."); 
+                      } 
+                }
+                console.log("success")
+                // let tnavInfo = await response.json(); 
+               
+            } catch (error) {
+                console.error("Error during API call:", error);
+            }finally{
+                
+            }
+        };
+
+        updateReview(newReview);
+        
         renderReviews();
         form.reset();
         highlightStars(0);
