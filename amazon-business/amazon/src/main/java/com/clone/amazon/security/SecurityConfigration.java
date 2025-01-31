@@ -1,5 +1,6 @@
 package com.clone.amazon.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,20 +20,12 @@ import org.springframework.web.cors.CorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfigration {
 
     private final UserDetailsService userDetailsService;
     private final JwtFilter jwtFilter;
     private final  CorsConfigurationSource corsConfigurationSource;
-
-    public SecurityConfigration(UserDetailsService userDetailsService,
-                                JwtFilter jwtFilter ,
-                                CorsConfigurationSource corsConfigurationSource
-    ){
-        this.userDetailsService = userDetailsService;
-        this.jwtFilter=jwtFilter;
-        this.corsConfigurationSource=corsConfigurationSource;
-    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -46,19 +39,14 @@ public class SecurityConfigration {
                                 "/api/auth/signIn",
                                 "/api/auth/signUp",
                                 "/api/auth/logout",
-                                "/api/main/products",
+                                "api/main/products",
                                 "/api/products/search",
                                 "/api/cart/add",
                                 "/api/information",
                                 "/api/products/relatedProduct"
                         ).permitAll()
-                        .requestMatchers("/").authenticated()
                         .anyRequest().authenticated())
                 .sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .httpBasic(Customizer.withDefaults())
-//                         .sessionManagement(
-//                                 session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                         )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

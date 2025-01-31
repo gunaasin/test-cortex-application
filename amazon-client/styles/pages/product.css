@@ -77,6 +77,8 @@ body {
     border: none;
     margin-bottom: 10px;
     cursor: pointer;
+
+   
 }
 
 .add-to-cart {
@@ -85,8 +87,11 @@ body {
 }
 
 .buy-now {
-    background: #FFA41C;
+    background: #E77600;
     border-color: #FF8F00;
+    &:hover{
+        background-color: #a95700;
+    }
 }
 
 .secure {

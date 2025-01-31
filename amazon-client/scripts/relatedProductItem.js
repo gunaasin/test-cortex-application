@@ -1,19 +1,19 @@
 import getStarRating from "./util/starRatingGenarater.js";
+import { API_END_POINT } from "../data/api.js";
 import { pageNotFont404 } from "../scripts/stylescripts/pageNotFound.js";
 
 const params = new URLSearchParams(window.location.search);
 const product = JSON.parse(atob(decodeURIComponent(params.get("d"))));
 const amazonBody = document.querySelector(".amazon-body");
-// related product section 
 const relatedProductkeyword = product.category.categoryName + ", " + product.category.brand;
 let relatedProducts = [];
 
 function loadRelatedProduct() {
-    const promise = fetch(`http://localhost:8080/api/products/relatedProduct?keyword=${relatedProductkeyword}`,
+    const promise = fetch(`${API_END_POINT}api/products/relatedProduct?keyword=${relatedProductkeyword}`,
         {
             method: "GET",
             headers: {
-              "Content-Type": "application/json", // Optional, depending on backend
+              "Content-Type": "application/json",
             },
         }
     ).then((response) => {
@@ -37,7 +37,6 @@ loadRelatedProduct().then(() => {
 function loadTheRelatedProduct() {
     let relatedProductHTML = "";
     relatedProducts.forEach((item) => {
-        // console.log(item);
         relatedProductHTML += `
         <a href="/product?d=${encodeURIComponent(btoa(JSON.stringify(item)))}"  target="_blank"" class="product-card">
             <img src="${item.image}" alt="Related Product 1">

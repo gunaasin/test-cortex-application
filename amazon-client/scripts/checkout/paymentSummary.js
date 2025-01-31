@@ -3,6 +3,7 @@ import { findproduct } from "../../data/products.js";
 import { getDeleiveryOption } from "../../data/deliveryOptions.js";
 import { convertMoney } from "../util/money.js";
 import { addOrder } from "../../data/order.js";
+// import { makePayment } from "../payment.js";
 
 // console.log(cart);
 export function renderPaymentSummary(loadedCart) {
@@ -66,7 +67,7 @@ export function renderPaymentSummary(loadedCart) {
    
       orderPlaceButton.innerHTML = "You'r order is process";
       try {
-        const responce = await fetch('https://supersimplebackend.dev/orders', {
+        const responce = await fetch(`${API_END_POINT}orders`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -85,13 +86,17 @@ export function renderPaymentSummary(loadedCart) {
       }catch(error){
         console.log('some thing is worng');
       }
-      openOrders();
+      const product ={
+        amount : totalCost,
+        quantity :1
+      }
+      openOrders(product);
          
   });
 
-  const openOrders =()=>{
+  const openOrders =(product)=>{
     setTimeout(()=>{
-      window.location.href="payment";
+      window.location.href= `/payment?checkout=${encodeURIComponent(btoa(JSON.stringify(product)))}`;
     },1000);
   }
 

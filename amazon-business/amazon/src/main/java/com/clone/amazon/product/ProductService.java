@@ -1,4 +1,6 @@
 package com.clone.amazon.product;
+import com.clone.amazon.security.JwtService;
+import com.clone.amazon.user.AmazonUserRepository;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
@@ -11,17 +13,23 @@ import java.util.stream.Collectors;
 @Service
 public class ProductService {
     private static List<Product> products  ;
-    public ProductRepository productRepository;
-    public ProductMapper productMapper;
+    private final ProductRepository productRepository;
+    private final ProductMapper productMapper;
+    private  final JwtService jwtService;
+    private final AmazonUserRepository amazonUserRepository;
+
+
     public ProductService(
             ProductRepository productRepository ,
-            ProductMapper productMapper
+            ProductMapper productMapper,
+            AmazonUserRepository amazonUserRepository,
+            JwtService jwtService
     ){
         this.productRepository=productRepository;
         this.productMapper = productMapper;
+        this.amazonUserRepository=amazonUserRepository;
+        this.jwtService=jwtService;
     }
-
-
 
     public List<ProductResponseDTO> getAllProducts(){
         List<Product> products =productRepository.findAll();
@@ -34,17 +42,26 @@ public class ProductService {
     }
 
     public ProductResponseDTO addProduct(ProductRequestDTO dto){
-        var response =  productRepository.save(
-                productMapper.convertRequestToProduct(dto)
+    var extractUser = jwtService.extractRoles(dto.token()).getFirst();
+    var amazonuser = amazonUserRepository.findByEmail(dto.email());
+    if(amazonuser.getRole().equals("admin") && extractUser.equals("admin")){
+        var response =  productRepository.save(productMapper.convertRequestToProduct(dto)
         );
         return productMapper.productResponseDTO(response);
     }
+       return null;
+    }
 
     public List<ProductResponseDTO> getProductBySearch(String keyword){
-         return  productRepository.searchProducts(keyword)
+       var result =  productRepository.searchProducts(keyword);
+         Collections.shuffle(result);
+
+               return result
                  .stream()
                  .map(productMapper::productResponseDTO)
-                 .toList();
+                 .collect(Collectors.toList());
+
+
     }
 
     public List<ProductResponseDTO> getRelatedProducts(String keyword) {
@@ -71,11 +88,10 @@ public class ProductService {
 
         if (decodeData.contains("&")) {
             String[] productInfo = Arrays.stream(decodeData.split("&"))
-                    .map(x -> x.trim().replaceAll("^\"|\"$", ""))  // Trim each part to remove unnecessary spaces
+                    .map(x -> x.trim().replaceAll("^\"|\"$", ""))
                     .toArray(String[]::new);
 
             products = productRepository.getProductBasedOnBrandAndCategory(productInfo[0], productInfo[1]);
-            System.out.println("Products with extracted values: " + products);
         }
         else if (decodeData.contains("*")) {
             String[] productInfo = Arrays.stream(decodeData.split("\\*"))
@@ -89,10 +105,12 @@ public class ProductService {
                     .toArray(String[]::new);
             products = productRepository.getProductBasedOnKeyWordAndKeyWord(productInfo[0] , productInfo[1]);
         }
-        
+        Collections.shuffle(products);
+
         return products.stream()
                 .map(productMapper::productResponseDTO)
-                .toList();
+                .collect(Collectors.toList());
+//                .toList();
     }
 }
 

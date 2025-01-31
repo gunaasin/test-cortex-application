@@ -2,12 +2,17 @@ package com.clone.amazon.user;
 
 import com.clone.amazon.security.JwtService;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+
+import java.util.List;
+
 @Service
+@RequiredArgsConstructor
 public class AmazonUserService {
 
     private final AmazonUserRepository amazonUserRepository;
@@ -15,24 +20,11 @@ public class AmazonUserService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
 
-    public AmazonUserService(
-            AmazonUserRepository amazonUserRepository,
-            AmazonUserMapper amazonUserMapper,
-            AuthenticationManager authenticationManager,
-            JwtService jwtService
-    ){
-        this.amazonUserRepository=amazonUserRepository;
-        this.authenticationManager=authenticationManager;
-        this.amazonUserMapper = amazonUserMapper;
-        this.jwtService=jwtService;
-    }
 
     @Transactional
     public AmazonUserResponseDTO saveUser(AmazonUserRequestDTO dto) {
-        System.out.println(dto +" in the amazon user save");
         try{
         var response = amazonUserRepository.save(amazonUserMapper.convertToUser(dto));
-        System.out.println(dto +" 2 in the amazon user save");
         return amazonUserMapper.convertToResponse(response);
         } catch (Exception e) {
             e.printStackTrace();
@@ -46,9 +38,9 @@ public class AmazonUserService {
                                 userLoginDto.mailId(),
                                 userLoginDto.password()
                         ));
-//        System.out.println(authentication.isAuthenticated());
+        var role = amazonUserRepository.findByEmail(userLoginDto.mailId()).getRole();
         if(authentication.isAuthenticated()) {
-            return jwtService.generateToken(userLoginDto.mailId());
+            return jwtService.generateToken(userLoginDto.mailId() , List.of(role));
         }
         return ("fail");
     }

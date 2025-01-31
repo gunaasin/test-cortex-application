@@ -1,21 +1,26 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/amazon
-    username: postgres
-    password: guna@17
+    url: ${DATASOURCE_URL}
+    username: ${DATASOURCE_USER}
+    password: ${DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver
-  application:
-    name: amazon
   jpa:
     hibernate:
       ddl-auto: update
     database: postgresql
+    properties:
+      hibernate:
+      dialect: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
   security:
     jwt:
       expiration: 86400000
       refresh-token: 604800000
-
+stripe:
+  secretKey: sk_test_51QmY6sKjA1yq8LJUKUlrInhO0gqPEZ5jBzhMB8mDwJi36Hdq15PchiMvlSb1hFmAug8kR8TsywZfoNtK1dmJw5V200idxr296R
+  primaryKey: pk_test_51QmY6sKjA1yq8LJURSMgR5gAGl0o8A9pJVWw36tUm7PqlsY5SJ2l5VQmW5omn2i2j2LbR83iObBnjAPGjk43tm1v00TL9f7gff
+client:
+  end-point: http://localhost:5173/
 #  security:
 #    oauth2:
 #      client:

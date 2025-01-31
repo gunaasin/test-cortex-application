@@ -1,4 +1,5 @@
 import { pageNotFont404 } from "../scripts/stylescripts/pageNotFound.js";
+import { API_END_POINT } from "./api.js";
 
 export let products = [];
 export let cart = [];
@@ -6,17 +7,18 @@ export let cart = [];
 export function loadProductFromBackend() {
 
   products.length = 0;
-  const reader = localStorage.getItem('information-entry');
   const params = new URLSearchParams(window.location.search);
   const keywords = params.get("d");
   const main = document.querySelector(".amazon-body");
 
-  const promise = fetch(`http://localhost:8080/api/main/products?enc=${keywords}`, {
+  const promise = fetch(`${API_END_POINT}api/main/products?enc=${keywords}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
   }).then((response) => {
+
+    console.log(response)
 
     return response.json();
   }).then((productData) => {
@@ -24,10 +26,14 @@ export function loadProductFromBackend() {
       return item;
     });
   }).catch((error) => {
-    main.innerHTML = "";
+
+    if (error.message.includes("Failed to fetch") || error.message.includes("NetworkError")) {
+        main.innerHTML = "";
     console.error("some thing is wrong please try again later :(");
     console.error(error);
     main.innerHTML = pageNotFont404;
+    }
+
   });
 
   return promise;
@@ -36,7 +42,8 @@ export function loadProductFromBackend() {
 
 
 export function loadProductBasedOnSearch(keyword) {
-  const promise = fetch(`http://localhost:8080/api/products/search?keyword=${keyword}`, {
+  console.log(keyword)
+  const promise = fetch(`${API_END_POINT}api/products/search?keyword=${keyword}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json"

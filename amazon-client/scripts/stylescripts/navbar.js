@@ -1,5 +1,6 @@
 import { getToken } from "../checkout.js";
 import { getEmailFromJWT } from "../util/util.js";
+import { API_END_POINT } from "../../data/api.js";
 
 const navbar = document.getElementById("amazon-nav");
 
@@ -19,7 +20,7 @@ const localInfo = {
 }
 export const loadNav = async (localInfo) => {
     try {
-        const response = await fetch("http://localhost:8080/api/information", {
+        const response = await fetch(`${API_END_POINT}api/information`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -33,7 +34,6 @@ export const loadNav = async (localInfo) => {
                 console.warn("Access forbidden. Please check your token or permissions."); 
               } 
         }
-
         navInfo = await response.json(); 
        
     } catch (error) {
@@ -109,10 +109,6 @@ function loadNavBar(navInfo){
     </div>
 `;
 
-    
-
-
-
     const mobileNav = document.getElementById("amazon-nav-mobile");
     mobileNav.innerHTML = `
     <div class="amazon-header-nav">
@@ -143,14 +139,13 @@ const searchBarData = document.getElementById("search-bar");
     // document.addEventListener("DOMContentLoaded", () => {
         searchBarData.addEventListener("keydown", (event) => {
             if (event.key === "Enter") {
-                console.log("helooo")
+         
                 let keyword = searchBarData.value.trim();
                 window.location.href = `amazon?ds=${encodeURIComponent(btoa(JSON.stringify(keyword)))}`;
             }
         });
 
         searchBtn.addEventListener("click", () => {
-            console.log("helooo")
             let keyword = searchBarData.value.trim();
             window.location.href = `amazon?ds=${encodeURIComponent(btoa(JSON.stringify(keyword)))}`;
             

@@ -1,31 +1,9 @@
 import { navInfo } from "./stylescripts/navbar.js";
+import { API_END_POINT } from "../data/api.js";
 import { product } from "./main-product.js";
 import { getToken } from "./checkout.js";
 import { getEmailFromJWT } from "./util/util.js";
 
-// / Initial reviews data
-let review = [
-    {
-        id: 1,
-        name: "John D.",
-        rating: 5,
-        title: "Excellent product, exceeded expectations",
-        content: "This product is absolutely amazing. The quality is outstanding and it performs exactly as advertised. I would highly recommend it to anyone looking for a reliable solution.",
-        date: "February 15, 2024",
-        helpful: 42,
-        verified: true
-    },
-    {
-        id: 2,
-        name: "Sarah J.",
-        rating: 4,
-        title: "Good product with minor issues",
-        content: "Overall, I'm satisfied with this purchase. The product works well but there are a few minor things that could be improved. Still, I would recommend it.",
-        date: "February 10, 2024",
-        helpful: 15,
-        verified: true
-    }
-];
 
 const reviewsHtml = document.querySelector(".reviews-container");
 
@@ -128,14 +106,14 @@ const reviewsHtml = document.querySelector(".reviews-container");
 const writeReviewButton = document.getElementById("write-review-button");
 writeReviewButton.addEventListener("click",()=> {
     document.getElementById('review-modal').style.display = 'block';
-    document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+    document.body.style.overflow = 'hidden';
 });
 
 document.getElementById("close").addEventListener("click",closeReviewModal)
 
 function closeReviewModal(){
     document.getElementById('review-modal').style.display = 'none';
-    document.body.style.overflow = 'auto'; // Restore scrolling
+    document.body.style.overflow = 'auto'; 
 }
 
 // Close modal when clicking outside
@@ -183,19 +161,7 @@ function highlightStars(rating) {
     });
 }
 
-// "reviews": [
-//             {
-//                 "name": "Guna",
-//                 "rating": 4,
-//                 "title": "good one ",
-//                 "content": "good",
-//                 "date": "January 29, 2025",
-//                 "helpful": 0,
-//                 "verified": false
-//             }
-//         ],
 
-console.log(product)
 // Render reviews''
 function renderReviews() {
     const reviewsList = document.getElementById('reviews-list');
@@ -223,7 +189,7 @@ function renderReviews() {
     `).join('');
 }
 
-// Handle review submission
+
 function setupReviewForm() {
     const form = document.getElementById('review-form');
     form.addEventListener('submit', (e) => {
@@ -250,11 +216,9 @@ function setupReviewForm() {
             verified: false
         };
 
-
-      
          const updateReview = async (newReview) => {
             try {
-                const response = await fetch("http://localhost:8080/api/write/review", {
+                const response = await fetch(`${API_END_POINT}api/write/review`, {
                     method: "POST",
                     headers: {
                         'Content-Type': 'application/json',
@@ -269,8 +233,6 @@ function setupReviewForm() {
                         console.warn("Access forbidden. Please check your token or permissions."); 
                       } 
                 }
-                console.log("success")
-                // let tnavInfo = await response.json(); 
                
             } catch (error) {
                 console.error("Error during API call:", error);

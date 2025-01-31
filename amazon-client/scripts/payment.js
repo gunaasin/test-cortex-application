@@ -1,52 +1,89 @@
-import "./from.js";
-import "./stylescripts/doggleForm.js";
+import { getEmailFromJWT } from "./util/util.js";
+import { API_END_POINT } from "../data/api.js";
 
+function getToken() {
+  try {
+    const storedToken = localStorage.getItem('datacart');
+    return storedToken ? JSON.parse(storedToken) : null;
+  } catch (error) {
+    console.error("Failed to parse token from localStorage:", error);
+    return null;
+  }
+}
 
+const params = new URLSearchParams(window.location.search);
 
-document.addEventListener('DOMContentLoaded', function() {
-    const paymentForm = document.getElementById('paymentForm');
-    const placeOrderBtn = document.getElementById('placeOrderBtn');
-    
-    // Handle payment method selection
-    paymentForm.addEventListener('change', function(e) {
-        if (e.target.type === 'radio') {
-            // Enable place order button when a payment method is selected
-            placeOrderBtn.disabled = false;
-            
-            // Highlight selected payment option
-            document.querySelectorAll('.payment-option').forEach(option => {
-                option.style.borderColor = '#ddd';
-            });
-            e.target.closest('.payment-option').style.borderColor = '#2874f0';
-        }
-    });
-    
-    // Handle place order button click
-    placeOrderBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        
-        const selectedPayment = document.querySelector('input[name="payment"]:checked');
-        
-        if (!selectedPayment) {
-            alert('Please select a payment method');
-            return;
-        }
-        
-        // Here you would typically handle the order submission
-        alert('Order placed successfully!');
-    });
-    
-    // Handle promo code application
-    const promoInput = document.querySelector('.promo-code input');
-    const promoButton = document.querySelector('.promo-code button');
-    
-    promoButton.addEventListener('click', function() {
-        if (promoInput.value.trim()) {
-            // Here you would typically validate the promo code
-            alert('Promo code applied!');
-            promoInput.value = '';
-        } else {
-            alert('Please enter a promo code');
-        }
-    });
-});
+ const {amount ,quantity} =JSON.parse(atob(decodeURIComponent(params.get("checkout"))));
+const storedData = getToken();
+if (!storedData) {
+  console.error("Token not found, redirecting to sign-in.");
+  window.location.href = "/signin";
+} else {
+  const token = storedData.token;
+  const email = getEmailFromJWT(token);
+console.log(amount);
+  const productData = {
+    token: token,
+    email: email,
+    amount: amount ,
+    quantity: quantity,
+    name: "laptop",
+    currency: "INR"
+  };
+
+  const postPayment = async (productData) => {
+    try {
+      const response = await fetch(`${API_END_POINT}api/payment/request`, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(productData)
+      });
+
+      if (!response.ok) {
+        console.log("nothing")
+        throw new Error(`HTTP error :( ${response.status}`);
+      }
+      
+      const data = await response.json();
+      window.location.href = data.sessionUrl;
+    } catch (error) {
+      window.location.href = "/signin";
+      console.error("Payment error:", error);
+    }
+  };
+
+  postPayment(productData);
+}
+
+  const removeCartAfterPayment = async (productData) => {
+
+    const information = {
+      token:productData.token,
+      email:productData.email
+    }
+    try {
+      const response = await fetch(`${API_END_POINT}api/payment/request`, {
+        method: "DELETE",
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${information.token}`,
+        },
+        body: JSON.stringify(information)
+      });
+
+      if (!response.ok) {
+        window.location.href = "/signin";
+        throw new Error(`HTTP error :( ${response.status}`);
+      }
+
+      const data = await response.json();
+    } catch (error) {
+      console.error("Payment error:", error);
+    }
+  };
+
+  // removeCartAfterPayment(productData);
+

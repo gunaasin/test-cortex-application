@@ -1,3 +1,4 @@
+
 import { resumeCheckOutRender } from './checkout/orderSummary.js';
 import { renderPaymentSummary } from './checkout/paymentSummary.js';
 import { loadCartFromBackend, loadedCart } from '../data/cart.js';

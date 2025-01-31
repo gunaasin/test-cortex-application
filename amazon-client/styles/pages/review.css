@@ -1,19 +1,15 @@
 /* Reviews Container */
 .reviews-container {
-    /* overflow-x: hidden; */
     max-width:1500px;
-    /* margin: 0 auto; */
     padding: 20px;
     display: flex;
-    /* flex-wrap: wrap; */
-    /* align-items: center; */
     justify-content: left;
     font-family: Arial, sans-serif;
 }
 
 /* Reviews Summary */
 .reviews-summary {
-    width: 900px;
+    width: 25vw;
     border-right: 1px solid #e7e7e7;
     padding:  20px;
     /* margin-bottom: 20px; */
@@ -207,6 +203,7 @@
 .form-group textarea {
     height: 150px;
     resize: vertical;
+    
 }
 
 .submit-review {
@@ -225,9 +222,9 @@
 
 /* Reviews List */
 .review {
-    width: 70%;
+    width: 50vw;
     /* border-bottom: 1px solid #e7e7e7; */
-    padding: 20px 40px ;
+    padding: 20px ;
 }
 
 .review-header {

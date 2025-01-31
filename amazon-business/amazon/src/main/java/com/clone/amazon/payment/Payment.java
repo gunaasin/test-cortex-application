@@ -3,6 +3,7 @@ package com.clone.amazon.payment;
 import com.clone.amazon.orders.Orders;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,16 +11,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;       // Primary Key
+    private Integer id;
     private String paymentDate;
-    private String paymentMethod; // e.g., Credit Card, PayPal, Cash on Delivery
+    private String paymentMethod;
     private double amount;
-    private String status;       // e.g., Paid, Failed, Pending
+    private String status;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id")
     private Orders orders;
 }

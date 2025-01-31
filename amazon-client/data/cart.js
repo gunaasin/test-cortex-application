@@ -1,3 +1,4 @@
+import { API_END_POINT } from "./api.js";
 import { getToken } from "../scripts/checkout.js";
 import { resumeCheckOutRender } from "../scripts/checkout/orderSummary.js";
 import { renderPaymentSummary } from "../scripts/checkout/paymentSummary.js";
@@ -15,7 +16,7 @@ export async function loadCartFromBackend(token) {
   };
 
   try {
-    const response = await fetch(`http://localhost:8080/api/cart/product`, {
+    const response = await fetch(`${API_END_POINT}api/cart/product`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -29,6 +30,7 @@ export async function loadCartFromBackend(token) {
       console.error("Failed to fetch cart products. Redirecting to signin.");
 
       window.location.href = "/signin";
+      // window.location.href = "/signin";
     
       return;
     }
@@ -38,7 +40,6 @@ export async function loadCartFromBackend(token) {
     // return loadedCart;
   } catch (error) {
     console.error("Error during fetching cart products:", error);
-    // window.location.href = "/signin";
   }
 }
 
@@ -74,7 +75,7 @@ export function addProductInCart(request) {
 
   const postProduct = async (productData) => {
     try {
-      const response = await fetch("http://localhost:8080/api/cart/add", {
+      const response = await fetch(`${API_END_POINT}api/cart/add`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
@@ -85,12 +86,12 @@ export function addProductInCart(request) {
 
       if (!response.ok) {
         return new Error(`HTTP error :( ${response.status}`)
+        window.location.href = "/signin";
       }
       // updateCartCount();
       loadNav(localInfo);
       console.log(' successfully');
     } catch (error) {
-      window.location.href = "/signin";
       console.error("error", error);
     }
   }
@@ -99,7 +100,7 @@ export function addProductInCart(request) {
 
 
 // remove the product
-export function removeProductFromCart(id) {
+export function removeProductFromCart(id , loadedCart) {
   const token = getToken().token;
   const email = getEmailFromJWT(token)
   const productData = {
@@ -110,7 +111,7 @@ export function removeProductFromCart(id) {
 
   const removeoduct = async (productData) => {
     try {
-      const endPoint = await fetch("http://localhost:8080/api/cart/remove", {
+      const endPoint = await fetch(`${API_END_POINT}api/cart/remove`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -121,6 +122,7 @@ export function removeProductFromCart(id) {
 
       if (!endPoint.ok) {
 
+        window.location.href = "/signin";
         setDataIntoLocalStorage();
         return new Error(`HTTP error :( ${endPoint.status}`)
       }
@@ -129,7 +131,6 @@ export function removeProductFromCart(id) {
       renderPaymentSummary(loadedCart);
       window.location.href = "/checkout"
     } catch (error) {
-      window.location.href = "/signin";
       console.error("error", error);
     }
   }
@@ -151,7 +152,7 @@ export function updateDeliveryOption(cartItemId, deliveryOptionId , loadedCart) 
 
   const postProduct = async (productData) => {
     try {
-      const response = await fetch("http://localhost:8080/api/cart/update", {
+      const response = await fetch(`${API_END_POINT}api/cart/update`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',

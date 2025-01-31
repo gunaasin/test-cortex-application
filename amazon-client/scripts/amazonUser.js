@@ -1,6 +1,7 @@
 import "./stylescripts/navbar.js";
 import "./stylescripts/fotter.js";
 import "./stylescripts/backtotop.js";
+import { API_END_POINT } from "../data/api.js";
 
 const accountOptions = [
     {
@@ -59,7 +60,7 @@ async function logout(token) {
     }
 
     try {
-        const response = await fetch(`http://localhost:8080/api/auth/logout`, {
+        const response = await fetch(`${API_END_POINT}api/auth/logout`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -74,7 +75,6 @@ async function logout(token) {
         }
 
         console.log("Logout successful:", response);
-        // Optionally redirect after logout
         window.location.href = "/signin";
     } catch (error) {
         console.error("Error during logout:", error);
@@ -89,7 +89,7 @@ async function getAccess(token) {
     }
 
     try {
-        const response = await fetch(`http://localhost:8080/api/auth/getKey`, {
+        const response = await fetch(`${API_END_POINT}api/auth/getKey`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -100,13 +100,8 @@ async function getAccess(token) {
 
         if (!response.ok) {
             window.location.href = "/signin";
-            // console.error("Logout failed:", response.status, response.statusText);
             return;
         }
-
-        // console.log("accsess granted successful:", response);
-        // Optionally redirect after logout
-        // 
     } catch (error) {
         console.error("Error during logout:", error);
         window.location.href = "/signin";

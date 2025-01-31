@@ -1,5 +1,6 @@
 import { validateEmail, validatePassword, validateMobile, validateName } from './validation.js';
 import { errorMessages } from './message.js';
+import { API_END_POINT } from '../../data/api.js';
 import { showError, clearError } from './ui.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -70,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const user = async (userData) => {
                 try{
-                    const response = await fetch("http://localhost:8080/api/auth/signUp" ,{
+                    const response = await fetch(`${API_END_POINT}api/auth/signUp` ,{
                         method: "POST",
                         headers:{
                             'Content-Type': 'application/json'
@@ -81,7 +82,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     if(!response.ok) return new Error(`signup error ${response.status}`)
 
                     const data = await response.json();
-                    console.log('signup succsess:' , data);
                     form.reset();
                     window.location.href="signin";
                 }catch(error){
@@ -95,8 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             user(userData);
 
-            // localStorage.setItem('amazon_user', JSON.stringify(userData));
-            // window.location.href = '/signin.html'; // Redirect to home page
+
         }
     });
 

@@ -1,6 +1,7 @@
+import { API_END_POINT } from "../data/api.js";
 import "./stylescripts/fotter.js";
 import "./stylescripts/backtotop.js"
-// import { getEmailFromJWT } from "./util/util.js";
+import { getEmailFromJWT } from "./util/util.js";
 
 document.querySelector('.app').innerHTML = `
   <div class="header">
@@ -16,6 +17,8 @@ document.querySelector('.app').innerHTML = `
           <option value="">Choose a category</option>
           <option value="electronics">Electronics</option>
           <option value="headphones">Headphones</option>
+          <option value="Laptop">Laptop</option>
+          <option value="Smartphones">Smartphones</option>
           <option value="home essentials">Home Essentials</option>
           <option value="clothing">Clothing</option>
           <option value="books">Books</option>
@@ -93,14 +96,10 @@ const form = document.getElementById('productForm');
 form.addEventListener('submit', (e) => {
   e.preventDefault();
   const token = getToken().token;
-  // const email = getEmailFromJWT(token)
-  // console.log(email)
-  // const auth = {
-  //   token: token,
-  //   email: email
-  // }
-
+  const email = getEmailFromJWT(token);
   const productData = {
+    token:token,
+    email:email,
     name: document.getElementById('name').value,
     description: document.getElementById('description').value,
     image: document.getElementById('image').value,
@@ -117,7 +116,7 @@ form.addEventListener('submit', (e) => {
 
   const postProduct = async (productData) => {
     try {
-      const response = await fetch("http://localhost:8080/api/products", {
+      const response = await fetch(`${API_END_POINT}api/admin`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
@@ -130,12 +129,15 @@ form.addEventListener('submit', (e) => {
         return new Error(`HTTP error :( ${response.status}`)
       }
       const data = await response.json();
-      console.log('Product saved successfully:', data);
+      // console.log('Product saved successfully:', data);
+      alert('Product added successfully!');
     } catch (error) {
-      console.error("error", error);
+      alert("This page not for all, seller only can access")
+      window.location.href="/";
+      // console.error("error", error);
     }
   }
   postProduct(productData);
-  alert('Product added successfully!');
-  form.reset();
+  
+  // form.reset();
 });

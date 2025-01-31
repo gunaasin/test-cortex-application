@@ -1,6 +1,7 @@
 import { validateEmail } from './validation.js';
 import { errorMessages } from './message.js';
 import { showError, clearError } from './ui.js';
+import { API_END_POINT } from '../../data/api.js';
 
 
 
@@ -40,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const user = async (userData) => {
                 try {
-                    const response = await fetch("http://localhost:8080/api/auth/signIn", {
+                    const response = await fetch(`${API_END_POINT}api/auth/signIn`, {
                         method: "POST",
                         headers: {
                             'Content-Type': 'application/json'
@@ -50,14 +51,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
 
                     if (!response.ok) {
-                        // message.innerText = "incoreerct credential";
+
                         showError('email', errorMessages.emailInvalid); 
                         showError('password', errorMessages.passwordInvalid);
                         return;
 
                     } else if (response.status === 202) {
                         console.log("Login successful");
-                        checkCookie(); 
                         form.reset();
                     } else {
                         console.warn(`Unexpected status code: ${response.status}`);
@@ -68,12 +68,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
 
                     localStorage.setItem("datacart",JSON.stringify(await response.json()));
-                    console.log('signin key');
-                    //  More appropriate message   
-                    // console.log(JSON.parse(localStorage.getItem("datacart")));
-                    window.location.href='amazonUser';
+                    window.location.href='/amazonUser';
 
                 } catch (error) {
+                    if(error.message.includes("Failed to fetch") || error.message.includes("NetworkError")){
+                        window.location.href='/amazon';
+                    }else{
+                        location.reload();
+                    }
                     console.error('Error during signin:', error);
                     message.innerText = "An error occurred during login."; 
                 } finally {
@@ -83,25 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             };
 
-            function checkCookie() {
-                fetch('/protected-resource', {
-                    method: 'GET',
-                    credentials: 'include' 
-                })
-                .then(response => {
-                    if (response.ok) {
-                        console.log('Cookie verification successful!');
-                        // window.location.href = '/'; // Redirect on successful login
-                    } else {
-                        console.error('Cookie verification failed:', response.status);
-                        message.innerText = "Authentication failed. Please try again.";
-                    }
-                })
-                .catch(error => {
-                    console.error('Error during cookie verification:', error);
-                    message.innerText = "A network error occurred.";
-                });
-            }
+            
 
             user(userData);
 
@@ -114,7 +98,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Display user information after successful login
-function displayUserInfo() {
 
-}

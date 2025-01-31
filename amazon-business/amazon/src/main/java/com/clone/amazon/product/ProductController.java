@@ -1,6 +1,8 @@
 package com.clone.amazon.product;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
@@ -24,12 +26,17 @@ public class ProductController {
         return ResponseEntity.ok(productService.getAllProducts());
     }
 
-    @PostMapping("/products")
-    public ResponseEntity<ProductResponseDTO> postProduct(
+    @PostMapping("/admin")
+    @PreAuthorize("hasRole('admin','seller')")
+    public ResponseEntity<?> postProduct(
             @RequestBody ProductRequestDTO productRequestDTO
     ){
+        try {
         var response = productService.addProduct(productRequestDTO);
-        return ResponseEntity.ok(response) ;
+             return ResponseEntity.ok(response) ;
+        } catch (Exception e) {
+            return  ResponseEntity.badRequest().body(Map.of("message" ,"this page not allowed"));
+        }
     }
 
     @GetMapping("/products/search")
@@ -51,7 +58,7 @@ public class ProductController {
     public ResponseEntity<?> getAllProductBasedOnUserSelectADV(
             @RequestParam String enc
     ){
-        System.out.println(enc);
+        System.out.println( "enc is "+enc);
         if(enc!=null){
             var response = productService.getProductByADV(enc);
         return ResponseEntity.ok(response);

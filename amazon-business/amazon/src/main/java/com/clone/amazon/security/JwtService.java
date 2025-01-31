@@ -13,10 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 
 @Service
@@ -35,14 +32,15 @@ public class JwtService {
         }
     }
 
-    public String generateToken(String mailId) {
+    public String generateToken(String mailId, List<String> roles) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("role",roles); // add user roles in the claims
         return Jwts.builder()
                 .claims()
                 .add(claims)
                 .subject(mailId)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000))
+                .expiration(new Date(System.currentTimeMillis() + 12 * 60 * 60 * 1000)) // expiation time 12 hr
                 .and()
                 .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
@@ -94,5 +92,8 @@ public class JwtService {
         return extractClaim(token, Claims::getExpiration);
     }
 
+    public List<String> extractRoles(String token) {
+        return extractClaim(token,claim->claim.get("role",List.class));  // Extract roles as a List from the token
+    }
 }
 

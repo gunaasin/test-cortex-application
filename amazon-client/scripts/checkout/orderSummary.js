@@ -104,14 +104,8 @@ export function resumeCheckOutRender(loadedCart) {
     .forEach((link) => {
       link.addEventListener("click", () => {
         const delProId = link.getAttribute("data-producdId");
-
-        // console.log(delProId)
-        renderPaymentSummary(loadedCart);
-         removeProductFromCart(delProId);
-
-
-
-         
+         removeProductFromCart(delProId , loadedCart);
+         renderPaymentSummary(loadedCart);
          const removeDom = document.querySelector(`.js-cart-item-container-${delProId}`);
          removeDom.remove();
 

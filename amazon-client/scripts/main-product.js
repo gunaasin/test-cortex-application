@@ -146,6 +146,8 @@ document.getElementById('share-product').addEventListener('click', () => {
 
 })
 
+
+
 // add to cart array section
 function addToCartFunction(productId) {
     let productIsThere;
@@ -155,11 +157,6 @@ function addToCartFunction(productId) {
         select.value = 1;
     })
 
-    loadedCart.forEach((item) => {
-        if (item.productId === productId) {
-            productIsThere = item;
-        }
-    })
 
     if (productIsThere) {
         if (selectedValue > 1) {
@@ -193,8 +190,24 @@ addToCart.forEach((button) => {
 // redairect to buying section
 
 document.querySelector(".buy-now").addEventListener("click", () => {
-    console.log("drg")
-    window.location.href = "payment";
+    let dummy = product.quantity
+    if (dummy) {
+        if (selectedValue > 1) {
+            dummy.quantity += selectedValue;
+        } else {
+            dummy.quantity += 1;
+        }
+    } else {
+        const Request = {
+            amount: product.price,
+            quantity: selectedValue
+        }
+        
+            window.location.href= `/payment?checkout=${encodeURIComponent(btoa(JSON.stringify(Request)))}`;
+        
+        
+    }
+    
 })
 
 

@@ -7,6 +7,8 @@ import com.clone.amazon.review.ReviewDTO;
 import java.util.List;
 
 public record ProductRequestDTO(
+        String token,
+        String email,
         String name ,
         String description,
         String image,

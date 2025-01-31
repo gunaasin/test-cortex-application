@@ -4,8 +4,11 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -13,6 +16,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
@@ -20,15 +26,14 @@ public class JwtFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final JwtBlockListService jwtBlacklistService;
 
-    public JwtFilter(
-            JwtService jwtService ,
-            ApplicationContext applicationContext,
-            JwtBlockListService jwtBlacklistService
-    ){
-        this.context=applicationContext;
+    public JwtFilter(  ApplicationContext context,
+                JwtService jwtService,
+                JwtBlockListService jwtBlacklistService){
+        this.context =context;
         this.jwtService = jwtService;
-        this.jwtBlacklistService = jwtBlacklistService;
+        this. jwtBlacklistService = jwtBlacklistService;
     }
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -52,6 +57,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
             UserDetails userDetails = context.getBean(MyUserDetailService.class).loadUserByUsername(mailID);
             if (jwtService.validateToken(token, userDetails)) {
+
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource()
                         .buildDetails(request));
@@ -61,4 +67,5 @@ public class JwtFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
+
 }
