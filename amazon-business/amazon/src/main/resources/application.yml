@@ -20,7 +20,7 @@ stripe:
   secretKey: sk_test_51QmY6sKjA1yq8LJUKUlrInhO0gqPEZ5jBzhMB8mDwJi36Hdq15PchiMvlSb1hFmAug8kR8TsywZfoNtK1dmJw5V200idxr296R
   primaryKey: pk_test_51QmY6sKjA1yq8LJURSMgR5gAGl0o8A9pJVWw36tUm7PqlsY5SJ2l5VQmW5omn2i2j2LbR83iObBnjAPGjk43tm1v00TL9f7gff
 client:
-  end-point: http://localhost:5173/
+  end-point: ${FRONT_END_SOURCE}
 #  security:
 #    oauth2:
 #      client:

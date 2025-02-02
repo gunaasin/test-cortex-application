@@ -26,7 +26,7 @@ async function fetchData(paramValue) {
         });
 
         if (!response.ok) {
-            window.location.href="/signin";
+            window.location.href="/signin.html";
         }
 
         const data = await response.json();
@@ -36,11 +36,6 @@ async function fetchData(paramValue) {
 }
 
 fetchData("exampleValue");
-
-
-
-
-
 
 
 const orderHtml = `

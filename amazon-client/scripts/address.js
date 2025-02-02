@@ -3,6 +3,7 @@ import "./stylescripts/fotter.js";
 import "./stylescripts/backtotop.js";
 import { getToken } from "./checkout.js";
 import { getEmailFromJWT } from "./util/util.js";
+import { API_END_POINT } from "../data/api.js";
 
 let getAddress = [];
 
@@ -24,7 +25,7 @@ function loadAddress() {
   const getAddressInfo = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/address/get?token=${token}&email=${email}`,
+        `${API_END_POINT}api/address/get?token=${token}&email=${email}`,
         {
           method: "GET",
           headers: {
@@ -34,12 +35,11 @@ function loadAddress() {
       );
 
       if (!response.ok) {
-          window.location.href="/signin";
+          window.location.href="/signin.html";
         throw new Error(`HTTP error: ${response.status}`);
       }
 
       const res = await response.json();
-    //   console.log("Addresses fetched successfully:", res);
       return res;
     } catch (error) {
       console.error("Error fetching addresses:", error);
@@ -49,7 +49,6 @@ function loadAddress() {
   getAddressInfo().then((response) => {
     if (response) {
       getAddress = response;
-      console.log(getAddress.name)
       if(getAddress.name!==null) {
         addAddressCard.style.display = "none";
        }
@@ -82,7 +81,7 @@ addressForm.addEventListener("submit", (e) => {
   const postAddress = async (addressData) => {
     try {
 
-      const response = await fetch("http://localhost:8080/api/address/add", {
+      const response = await fetch(`${API_END_POINT}api/address/add`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -96,7 +95,6 @@ addressForm.addEventListener("submit", (e) => {
       }
 
       const res = await response.json();
-      console.log("Address saved successfully:", res);
       renderAddresses();
       return res;
     } catch (error) {

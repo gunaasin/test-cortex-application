@@ -203,7 +203,7 @@ document.querySelector(".buy-now").addEventListener("click", () => {
             quantity: selectedValue
         }
         
-            window.location.href= `/payment?checkout=${encodeURIComponent(btoa(JSON.stringify(Request)))}`;
+            window.location.href= `/payment.html?checkout=${encodeURIComponent(btoa(JSON.stringify(Request)))}`;
         
         
     }

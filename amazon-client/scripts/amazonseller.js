@@ -17,12 +17,16 @@ document.querySelector('.app').innerHTML = `
           <option value="">Choose a category</option>
           <option value="electronics">Electronics</option>
           <option value="headphones">Headphones</option>
+          <option value="Appliances">Appliances</option>
           <option value="Laptop">Laptop</option>
           <option value="Smartphones">Smartphones</option>
           <option value="home essentials">Home Essentials</option>
           <option value="clothing">Clothing</option>
+          <option value="fashion , jewels">fashion & jewels</option>
           <option value="books">Books</option>
+          <option value="Bags , wallets">Bags & wallets</option>
           <option value="home">Home & Kitchen</option>
+          <option value="Sports , shoes">Sports & shoes</option>
           <option value="toys">Toys & Games</option>
         </select>
       </div>
@@ -84,7 +88,7 @@ document.querySelector('.app').innerHTML = `
 function getToken() {
   try {
     const storedToken = localStorage.getItem('datacart');
-    return storedToken === null ? window.location.href = "/signin" : JSON.parse(storedToken);
+    return storedToken === null ? "": JSON.parse(storedToken); ///window.location.href = "/signin" 
   } catch (error) {
     console.error("Failed to parse token from localStorage:", error);
     return null;

@@ -116,9 +116,6 @@ export function resumeCheckOutRender(loadedCart) {
   document.querySelectorAll(".js-delivery-option")
     .forEach((element) => {
       element.addEventListener("click", () => {
-
-        // console.log(element.getAttribute("data-productId"));
-        // console.log(element.getAttribute("data-deliveryOption-Id"))
         updateDeliveryOption(element.getAttribute("data-productId"), element.getAttribute("data-deliveryOption-Id") , loadedCart);
         resumeCheckOutRender(loadedCart);
         

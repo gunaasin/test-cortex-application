@@ -1,5 +1,4 @@
 export function loadProductNotFound() {
-    console.log("kjshuk gfs")
     const main = document.querySelector(".main");
     main.innerHTML = "";
 

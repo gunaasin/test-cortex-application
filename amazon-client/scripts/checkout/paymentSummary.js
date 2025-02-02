@@ -96,7 +96,7 @@ export function renderPaymentSummary(loadedCart) {
 
   const openOrders =(product)=>{
     setTimeout(()=>{
-      window.location.href= `/payment?checkout=${encodeURIComponent(btoa(JSON.stringify(product)))}`;
+      window.location.href= `/payment.html?checkout=${encodeURIComponent(btoa(JSON.stringify(product)))}`;
     },1000);
   }
 

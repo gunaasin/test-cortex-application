@@ -11,8 +11,10 @@ public class WebConfiguration implements WebMvcConfigurer {
     @Value("${client.end-point}")
     private String CLI_END_POINT;
 
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
+        System.out.println(CLI_END_POINT);
         registry.addMapping("/**")
                 .allowedOrigins(CLI_END_POINT)
                 .allowedMethods("GET", "POST", "PUT", "DELETE")

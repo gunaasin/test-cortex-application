@@ -53,7 +53,7 @@ fotter.innerHTML = `
 
 
 document.querySelector(".sellOnAmazon").addEventListener("click" , ()=>{
-    window.location.href="amazonseller";
+    window.location.href="/amazonseller.html";
 })
 
 document.querySelectorAll(".call").forEach((item)=>{

@@ -68,11 +68,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
 
                     localStorage.setItem("datacart",JSON.stringify(await response.json()));
-                    window.location.href='/amazonUser';
+                    window.location.href='/amazonUser.html';
 
                 } catch (error) {
                     if(error.message.includes("Failed to fetch") || error.message.includes("NetworkError")){
-                        window.location.href='/amazon';
+                        window.location.href='/amazon.html';
                     }else{
                         location.reload();
                     }
